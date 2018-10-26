@@ -14,7 +14,6 @@
 
 	<link href="{{ asset('dashboard/css/bootstrap.min.css') }}" rel="stylesheet">
 
-	@yield('css')
 	<link href="{{ asset('dashboard/css/nifty.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
 
@@ -24,6 +23,8 @@
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/font-awesome/css/font-awesome.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('node_modules/toastr/build/toastr.min.css') }}">
+
+	@yield('css')
 </head>
 <body>
 	<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
@@ -183,9 +184,9 @@
 									@if(Auth::user()->user_role == "admin" || Auth::user()->user_role == "hr")
 									<li class="list-header">Human Resource</li>
 									<li>
-										<a href="/">
+										<a href="{{ route('riders-list') }}">
 											<i class="demo-pli-male"></i>
-											<span class="menu-title">Riders</span>
+											<span class="menu-title">Employees</span>
 										</a>
 									</li>
 									@endif

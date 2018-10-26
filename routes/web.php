@@ -23,3 +23,9 @@ Route::prefix('assets')->group(function(){
 	Route::put('manage-asset/edit/{id}', 'Dashboard\AssetManagementController@update')->name('editAsset');
 	Route::post('/manage-asset/add-tracker-report/{id}', 'Dashboard\AssetManagementController@storeTrackerReport')->name('addTrackerReport');
 });
+
+Route::prefix('employees')->group(function(){
+	Route::get('/riders', 'Dashboard\EmployeeController@riders')->name('riders-list');
+	Route::get('/rider/new', 'Dashboard\EmployeeController@newRider')->name('new-rider');
+	Route::post('/rider/add', 'Dashboard\EmployeeController@store')->name('post-new-rider');
+});
