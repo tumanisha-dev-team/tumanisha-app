@@ -29,3 +29,9 @@ Route::prefix('employees')->group(function(){
 	Route::get('/rider/new', 'Dashboard\EmployeeController@newRider')->name('new-rider');
 	Route::post('/rider/add', 'Dashboard\EmployeeController@store')->name('post-new-rider');
 });
+
+Route::prefix('invoices')->group(function(){
+	Route::get('/', 'Dashboard\InvoiceController@index')->name('invoices_home');
+	Route::post('/add-invoice', 'Dashboard\InvoiceController@store')->name('add-invoice');
+	Route::get('/download/{id}', 'Dashboard\InvoiceController@downloadInvoice')->name('download-invoice');
+});

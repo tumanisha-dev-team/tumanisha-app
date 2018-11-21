@@ -13,6 +13,8 @@
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
 	<link href="{{ asset('dashboard/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/font-awesome/css/font-awesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('node_modules/toastr/build/toastr.min.css') }}">
 
 	<link href="{{ asset('dashboard/css/nifty.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
@@ -21,8 +23,7 @@
 	<script src="{{ asset('dashboard/plugins/pace/pace.min.js') }}"></script>
 
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/font-awesome/css/font-awesome.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('node_modules/toastr/build/toastr.min.css') }}">
+	
 
 	@yield('css')
 </head>
@@ -173,7 +174,7 @@
 									@if(Auth::user()->user_role == "admin" || Auth::user()->user_role == "finance")
 									<li class="list-header">Finance</li>
 									<li>
-										<a href="/">
+										<a href="{{ route('invoices_home') }}">
 											<i class="demo-pli-file"></i>
 											<span class="menu-title">Invoices</span>
 										</a>
@@ -223,8 +224,20 @@
 	<script type="text/javascript">
 		toastr.error("{{ session()->get('error') }} ", "Error");
 	</script>@endif
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.table-responsive').on('show.bs.dropdown', function () {
+				$('.table-responsive').css( "overflow", "inherit" );
+			});
+
+			$('.table-responsive').on('hide.bs.dropdown', function () {
+				$('.table-responsive').css( "overflow", "auto" );
+			});
+		});
+	</script>
 	@yield('js')
 	<script type="text/javascript" src="{{ asset('dashboard/js/nifty.min.js') }}"></script>
+	
 	<!-- <script type="text/javascript" src="{{ asset('dashboard/js/demo/nifty-demo.min.js') }}"></script> -->
 </body>
 </html>

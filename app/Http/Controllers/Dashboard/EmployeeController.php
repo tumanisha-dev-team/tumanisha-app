@@ -9,6 +9,10 @@ use App\Enums\Religion;
 
 class EmployeeController extends Controller
 {
+	function __construct()
+	{
+		$this->middleware('auth');
+	}
     function riders(){
     	return view('dashboard.employees.riders');
     }
