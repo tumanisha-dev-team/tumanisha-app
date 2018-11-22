@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Rider extends Model
 {
     protected $fillable = [
-    	'id',
 		'first_name',
 		'last_name',
 		'national_id_no',

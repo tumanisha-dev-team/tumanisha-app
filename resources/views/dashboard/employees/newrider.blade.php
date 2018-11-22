@@ -16,6 +16,9 @@
 				<div class="pad-ver">
 					 <i class="demo-pli-male icon-5x"></i>
 				</div>
+				<!-- <div>
+					<img id="rider-image" style="width: 100%;max-width: 100%;" src="{{ asset('dashboard/img/gallery/big/tile10.jpg') }}" />
+				</div> -->
 				<ul>
 					<li>Please make sure you fill in all the sections as required.</li>
 					<li>Missing information may lead to data loss.</li>
@@ -24,15 +27,15 @@
 		</div>
 		<div class="col-md-8 eq-box-md eq-no-panel">
 			<div id="demo-main-wz">
-				<ul class="row wz-step wz-icon-bw wz-nav-off mar-top">
+				<!-- <ul class="row wz-step wz-icon-bw wz-nav-off mar-top">
 					<li class="col-xs-3">
 						<a data-toggle="tab" href="#employee-profile">
 							<span class="text-danger"><i class="demo-pli-information icon-2x"></i></span>
 							<h5 class="mar-no">Employee Profile</h5>
 						</a>
-					</li>
+					</li> -->
 
-					<li class="col-xs-3">
+					<!-- <li class="col-xs-3">
 						<a data-toggle="tab" href="#education-history">
 							<span class="text-success"><i class="fa fa-graduation-cap fa-2x"></i></span>
 							<h5 class="mar-no">Education History</h5>
@@ -51,17 +54,16 @@
 							<span class="text-warning"><i class="ion ion-person-stalker icon-2x"></i></span>
 							<h5 class="mar-no">Next of Kin</h5>
 						</a>
-					</li>
-				</ul>
+					</li> -->
+				<!-- </ul> -->
 
-				<div class="progress progress-xs">
+				<!-- <div class="progress progress-xs">
 					<div class="progress-bar progress-bar-primary"></div>
-				</div>
+				</div> -->
 
-				{!! Form::open(['id' => 'employee-form', 'url' => route('post-new-rider')]) !!}
-
+				{!! Form::open(['id' => 'employee-form', 'url' => route('post-new-rider'), 'files' => true]) !!}
 					<div class="panel-body">
-						<div class="tab-content">
+						<!-- <div class="tab-content"> -->
 							<div id="employee-profile" class="tab-pane">
 								<fieldset>
 									<legend>Basic Information</legend>
@@ -105,14 +107,14 @@
 										</div>
 										<div class="col-lg-6">
 											{!! Form::label('gender', 'Gender', ['class' => 'control-label']) !!}
-											{!! Form::select('gender', ['Male', 'Female'], NULL, ['class' => 'form-control']) !!}
+											{!! Form::select('gender', [0 => 'Male', 1 => 'Female'], NULL, ['class' => 'form-control']) !!}
 										</div>
 									</div>
 
 									<div class="form-group">
 										<div class="col-lg-6">
 											{!! Form::label('nationality', 'Nationality', ['class' => 'control-label']) !!}
-											{!! Form::text('nationality', 'Kenyan', ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+											{!! Form::text('nationality', 'Kenyan', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
 										</div>
 										<div class="col-lg-6">
 											{!! Form::label('religion', 'Religion', ['class' => 'control-label']) !!}
@@ -133,11 +135,18 @@
 									</div>
 
 									<div class="form-group">
-										<div class="col-lg-12">
+										<div class="col-lg-6">
 											{!! Form::label('email', 'Email', ['class' => 'control-label']) !!}
 											{!! Form::email('email', NULL, ['class' => 'form-control']) !!}
 										</div>
+
+										<div class="col-lg-6">
+											{!! Form::label('image', 'Upload the Rider\'s passport photo', ['class' => 'control-label']) !!}
+											{!! Form::file('image', NULL, ['class' => 'form-control', 'required' => 'required']) !!}
+										</div>
 									</div>
+
+
 								</fieldset>
 
 								<fieldset>
@@ -162,7 +171,7 @@
 								</fieldset>
 							</div>
 
-							<div id="education-history" class="tab-pane">
+							<!-- <div id="education-history" class="tab-pane">
 								<div class="form-group">
 									{!! Form::label('college_high_schoool', 'High School/College') !!}
 									{!! Form::text('college_high_school', NULL, ['class' => 'form-control']) !!}
@@ -172,9 +181,9 @@
 									{!! Form::label('primary_school', 'Primary School') !!}
 									{!! Form::text('primary_school', NULL, ['class' => 'form-control']) !!}
 								</div>
-							</div>
+							</div> -->
 
-							<div id="work-experience" class="tab-pane">
+							<!-- <div id="work-experience" class="tab-pane">
 								<div id="work-experience-template-holder">
 									<div class="work-experience-template bord-all pad-all mar-btm" id="experience_0" data-id = "0">
 										<div class="form-group mar-btm">
@@ -217,9 +226,9 @@
 								</div>
 
 								<a class="btn btn-default btn-xs" id="add-experience" role="button"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Experience</a>
-							</div>
+							</div> -->
 
-							<div id="next-of-kin" class="tab-pane">
+							<!-- <div id="next-of-kin" class="tab-pane">
 								<div id="next-of-kin-template">
 									<div class="nextkin bord-all pad-all mar-btm">
 										<div class="row form-group mar-btm">
@@ -243,14 +252,17 @@
 								<div class="text-right">
 									<a class="btn btn-xs btn-default add-kin"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Next of Kin</a>
 								</div>
-							</div>
-						</div>
+							</div> -->
+						<!-- </div> -->
 					</div>
 
-					<div class="pull-right pad-rgt mar-btm">
+					<!-- <div class="pull-right pad-rgt mar-btm">
 						<button type="button" class="previous btn btn-primary">Previous</button>
 						<button type="button" class="next btn btn-primary">Next</button>
 						<button type="button" class="finish btn btn-success" disabled>Finish</button>
+					</div> -->
+					<div class="pull-right pad-rgt mar-btm">
+						<button id="save-btn" type="submit" class="btn btn-success">Save</button>
 					</div>
 				{!! Form::close() !!}
 			</div>
@@ -303,7 +315,6 @@
 				isValid = null;
 	            $('#employee-form').bootstrapValidator('validate');
 
-
 	            if(isValid === false)return false;
 			},
 			onFinish: function(){
@@ -312,6 +323,10 @@
 		});
 
 		var isValid;
+
+		$('#save-btn').click(function(){
+			// alert("save button");
+		});
 
 		$('#employee-form').bootstrapValidator({
 			message: 'This value is not valid',
@@ -416,6 +431,8 @@
 		}).on('error.form.bv', function(e) {
 			isValid = false;
 		});
+
+		$('.work-experience-template').find('div.form-group').removeClass('has-feedback');
 
 		$('#add-experience').click(function(){
 			$('#work-experience-template-holder').append(experience_template);
