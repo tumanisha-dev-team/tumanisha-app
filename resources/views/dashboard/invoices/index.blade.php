@@ -65,6 +65,7 @@
 								<div class="dropdown">
 									<button class="btn btn-sm btn-mint btn-active-purple dropdown-toggle" data-toggle="dropdown" type="button">Action <i class="dropdown-caret"></i></button>
 									<ul class="dropdown-menu">
+										<li><a href="{{ route('edit-invoice', ['id' => $invoice->id]) }}"><i class="demo-psi-pen-5"></i>&nbsp;Edit Invoice</a></li>
 										<li><a href="{{ route('download-invoice', ['id' => $invoice->id]) }}"><i class="demo-pli-download-from-cloud"></i>&nbsp;Download Invoice</a></li>
 									</ul>
 								</div>

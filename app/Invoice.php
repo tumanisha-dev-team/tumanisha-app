@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class Invoice extends Model
 {
-	protected $dateFormat = 'Y-m-d';
+	protected $my_date_format = 'Y-m-d';
     protected $fillable = ['invoice_no', 'from', 'to', 'amount', 'tax', 'uploaded_by', 'status', 'invoice_file_url', 'invoice_date'];
 
     public function user(){
@@ -16,14 +16,14 @@ class Invoice extends Model
     }
 
     public function setFromAttribute($value){
-    	$this->attributes['from'] = new Carbon($value);
+    	$this->attributes['from'] = Carbon::parse($value)->format($this->my_date_format);
     }
 
     public function setToAttribute($value){
-		$this->attributes['to'] = new Carbon($value);
+		$this->attributes['to'] = Carbon::parse($value)->format($this->my_date_format);
     }
 
     public function setInvoiceDateAttribute($value){
-    	$this->attributes['invoice_date'] = new Carbon($value);
+    	$this->attributes['invoice_date'] = Carbon::parse($value)->format($this->my_date_format);
     }
 }
