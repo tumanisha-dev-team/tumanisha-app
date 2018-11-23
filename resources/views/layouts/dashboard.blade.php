@@ -96,10 +96,10 @@
 						<h1 class="page-header text-overflow">@yield('title')</h1>
 					</div>
 
-					<ol class="breadcrumb">
+					<!-- <ol class="breadcrumb">
 						<li><a href="/"><i class="demo-pli-home"></i></a></li>
 						<li class="active">@yield('title')</li>
-					</ol>
+					</ol> -->
 				</div>
 
 				<div id="page-content">

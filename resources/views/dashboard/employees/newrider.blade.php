@@ -142,7 +142,7 @@
 
 										<div class="col-lg-6">
 											{!! Form::label('image', 'Upload the Rider\'s passport photo', ['class' => 'control-label']) !!}
-											{!! Form::file('image', NULL, ['class' => 'form-control', 'required' => 'required']) !!}
+											{!! Form::file('image', NULL, ['class' => 'form-control']) !!}
 										</div>
 									</div>
 

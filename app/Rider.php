@@ -37,4 +37,8 @@ class Rider extends Model
     public function next_of_kin(){
     	return $this->hasMany('App\RiderNextOfKin');
     }
+
+    public function getRiderAvatarAttribute(){
+    	return ($this->photo_url) ? \Storage::url($this->photo_url) : '/dashboard/img/profile-photos/2.png';
+    }
 }

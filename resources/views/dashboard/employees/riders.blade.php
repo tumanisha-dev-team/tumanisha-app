@@ -42,7 +42,7 @@
 				</div>
 
 				<a href="#">
-					<img alt="Profile Picture" class="img-lg img-circle mar-ver" src="">
+					<img alt="Profile Picture" class="img-lg img-circle mar-ver" src="{{ $rider->rider_avatar }}">
 					<p class="text-lg text-semibold mar-no text-main">{{ $rider->first_name . ' ' . $rider->last_name }}</p>
 					<p class="text-sm">Rider</p>
 					<p class="text-sm">Born on: {{ \Carbon\Carbon::parse($rider->date_of_birth)->format('dS F, Y') }}</p>
