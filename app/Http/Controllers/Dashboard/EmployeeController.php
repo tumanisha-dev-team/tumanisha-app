@@ -46,7 +46,6 @@ class EmployeeController extends Controller
             'height'                =>  'required',
             'eye_color'             =>  'required',
             'hair_color'            =>  'required',
-            'image'                 =>  'required|mimes:jpeg,jpg,png'
         ]);
 
         $rider->first_name = $request->input('first_name');
@@ -65,7 +64,14 @@ class EmployeeController extends Controller
         $rider->height = $request->input('height');
         $rider->eye_color = $request->input('eye_color');
         $rider->hair_color = $request->input('hair_color');
-        $rider->photo_url = $request->file('image')->store('profiles');
+
+        if ($request->hasFile('image')) {
+            $this->validate($request, [
+                'image'                 =>  'required|mimes:jpeg,jpg,png'
+            ]);
+            $rider->photo_url = $request->file('image')->store('profiles');
+        }
+        
 
         $rider->save();
         return redirect()->route('riders-list')->with('success', 'Successfully added a rider');
