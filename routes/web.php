@@ -28,6 +28,11 @@ Route::prefix('employees')->group(function(){
 	Route::get('/riders', 'Dashboard\EmployeeController@riders')->name('riders-list');
 	Route::get('/rider/new', 'Dashboard\EmployeeController@newRider')->name('new-rider');
 	Route::post('/rider/add', 'Dashboard\EmployeeController@store')->name('post-new-rider');
+	Route::get('/rider/profile_photo/{id}', function($id){
+		$rider = \App\Rider::find($id);
+
+		return response()->download(storage_path("app/" . $rider->photo_url));
+	})->name('rider-profile');
 });
 
 Route::prefix('invoices')->group(function(){

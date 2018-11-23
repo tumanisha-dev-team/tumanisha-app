@@ -39,6 +39,6 @@ class Rider extends Model
     }
 
     public function getRiderAvatarAttribute(){
-    	return ($this->photo_url) ? \Storage::url($this->photo_url) : '/dashboard/img/profile-photos/2.png';
+    	return ($this->photo_url) ? route('rider-profile', $this->id) : '/dashboard/img/profile-photos/2.png';
     }
 }
