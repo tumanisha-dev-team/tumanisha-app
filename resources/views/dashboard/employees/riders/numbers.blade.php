@@ -78,13 +78,18 @@
 
 	function generateTable(riders, date){
 		$table = '<form id="orders-form"><input type ="hidden" name="orders_date" value = "'+date+'" /><table class = "table table-bordered table-striped">';
-		$table += "<tr><th>Rider</th><th>Orders</th><th>Comment</th></tr>";
+		$table += "<tr><th>Rider</th><th style='width:10%'>Orders</th><th>Comment</th></tr>";
 		$.each(riders, function(key, rider){
 			orders = (rider.orders == null) ? "" : rider.orders;
 			if (rider.comments == "null" || rider.comments == null) {
 				rider.comments = "";
 			}
-			$table += "<tr><input type='hidden' name='id[]' value='"+rider.id+"' /><th>"+rider.first_name + " " + rider.last_name +"</th><td><input type = 'number' class = 'form-control' name='orders[]' value='"+orders+"'/></td><td><textarea name = 'comments[]' class = 'form-control' rows='1'>"+rider.comments+"</textarea></td></tr>";
+
+			if(rider.orders_id == null){
+				rider.orders_id = "";
+			}
+			
+			$table += "<tr><input type='hidden' name='id[]' value='"+rider.id+"' /><input type='hidden' name='orders_id[]' value='"+rider.orders_id+"' /><th>"+rider.first_name + " " + rider.last_name +"</th><td><input type = 'number' class = 'form-control' name='orders[]' value='"+orders+"'/></td><td><textarea name = 'comments[]' class = 'form-control' rows='1'>"+rider.comments+"</textarea></td></tr>";
 		});
 		$table += "</table></form>";
 

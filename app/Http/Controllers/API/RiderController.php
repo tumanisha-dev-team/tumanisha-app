@@ -17,7 +17,7 @@ class RiderController extends Controller
     function getRidersOrderByDate($date){
     	$date = \Carbon\Carbon::parse($date)->format('Y-m-d');
     	$riderNumbers = \DB::table('riders')
-    					->select('riders.id', 'riders.first_name', 'riders.last_name', 'riders.photo_url', 'rider_numbers.orders', 'rider_numbers.orders_date', 'rider_numbers.comments')
+    					->select('riders.id', 'riders.first_name', 'riders.last_name', 'riders.photo_url', \DB::raw('rider_numbers.id AS orders_id'), 'rider_numbers.orders', 'rider_numbers.orders_date', 'rider_numbers.comments')
     					->leftJoin('rider_numbers', function($join) use ($date){
     						$join->on('riders.id', '=', 'rider_numbers.employee_id')
     						->where('rider_numbers.orders_date', '=', $date);
@@ -34,6 +34,7 @@ class RiderController extends Controller
     			'id'			=>	$id,
     			'orders'		=>	$request->orders[$k],
     			'comment'		=>	$request->comments[$k],
+    			'orders_id'		=>	$request->orders_id[$k],
     			'orders_date'	=>	$request->orders_date
     		];
     	}
