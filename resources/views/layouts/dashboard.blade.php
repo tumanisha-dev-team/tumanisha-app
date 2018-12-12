@@ -190,6 +190,13 @@
 											<span class="menu-title">Employees</span>
 										</a>
 									</li>
+
+									<li>
+										<a href="{{ route('rider-numbers') }}">
+											<i class="fa fa-line-chart"></i>
+											<span class="menu-title">Rider Numbers</span>
+										</a>
+									</li>
 									@endif
 								</ul>
 							</div>

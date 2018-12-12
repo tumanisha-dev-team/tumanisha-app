@@ -31,7 +31,7 @@
 					<div class="btn-group dropdown">
 						<a href="#" class="dropdown-toggle btn btn-trans" data-toggle="dropdown" aria-expanded="false"><i class="demo-psi-dot-vertical icon-lg"></i></a>
 						<ul class="dropdown-menu dropdown-menu-right" style="">
-							<li><a href="#"><i class="icon-lg icon-fw demo-psi-pen-5"></i> Edit</a></li>
+							<li><a href="{{ route('edit-rider', $rider->id) }}"><i class="icon-lg icon-fw demo-psi-pen-5"></i> Edit</a></li>
 							<li><a href="#"><i class="icon-lg icon-fw demo-pli-recycling"></i> Remove</a></li>
 							<li class="divider"></li>
 							<li><a href="#"><i class="icon-lg icon-fw demo-pli-mail"></i> Send a Message</a></li>

@@ -27,12 +27,16 @@ Route::prefix('assets')->group(function(){
 Route::prefix('employees')->group(function(){
 	Route::get('/riders', 'Dashboard\EmployeeController@riders')->name('riders-list');
 	Route::get('/rider/new', 'Dashboard\EmployeeController@newRider')->name('new-rider');
+	Route::get('/rider/{id}/edit', 'Dashboard\EmployeeController@editRider')->name('edit-rider');
 	Route::post('/rider/add', 'Dashboard\EmployeeController@store')->name('post-new-rider');
+	Route::post('/rider/{id}/edit', 'Dashboard\EmployeeController@updateRider')->name('update-rider');
 	Route::get('/rider/profile_photo/{id}', function($id){
 		$rider = \App\Rider::find($id);
 
 		return response()->download(storage_path("app/" . $rider->photo_url));
 	})->name('rider-profile');
+
+	Route::get('/rider/numbers', 'Dashboard\RiderNumbersController@index')->name('rider-numbers');
 });
 
 Route::prefix('invoices')->group(function(){
