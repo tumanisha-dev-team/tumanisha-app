@@ -27,6 +27,21 @@ class RiderController extends Controller
     	return $riderNumbers;
     }
 
+    function getMonthOrders($month){
+      $orders = RiderNumber::select(\DB::raw('SUM(orders) AS orders'))
+                            ->where(\DB::raw('MONTH(orders_date)'), $month)
+                            ->groupBy(\DB::raw('MONTH(orders_date)'))
+                            ->first();
+
+      if($orders == NULL){
+        $orders = [
+          'orders'  =>  0
+        ];
+      }
+
+      return $orders;
+    }
+
     function storeOrders(Request $request){
     	$data = [];
     	foreach($request->input('id') as $k => $id){
