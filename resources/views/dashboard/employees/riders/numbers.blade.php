@@ -14,6 +14,21 @@
 				</div>
 				<p class="pad-hor mar-top text-main text-bold text-sm text-uppercase">Calendar</p>
 				<div id="date-picker" data-date = '{{ new \Carbon\Carbon() }}'></div>
+				<div class="list-group bg-trans pad-ver bord-ver">
+					<p class="pad-hor mar-top text-main text-bold text-sm text-uppercase">Statistics</p>
+					<!-- Menu list item -->
+					<a href="#" class="list-group-item list-item-sm">
+						Current Month: (December) <span id="current-month-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
+					</a>
+
+					<a href="#" class="list-group-item list-item-sm">
+						Previous Month: (November) <span id="previous-month-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
+					</a>
+
+					<a href="#" class="list-group-item list-item-sm">
+						Lifetime: (December) <span id="lifetime-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
+					</a>
+				</div>
 			</div>
 			<div class = 'fluid' id="order_container">
 				<div class = 'row'>
@@ -53,6 +68,8 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var today = '{{ new \Carbon\Carbon() }}';
+		getCurrentMonthOrders();
+		getLastMonthOrders();
 		var datepicker = $('#date-picker').datepicker({
 			calendarWeeks: true,
 			endDate: today,
@@ -93,6 +110,21 @@
 			}
 
 			return difference;
+		}
+
+		function getCurrentMonthOrders(){
+			month = moment().format('M');
+			$.get('/api/riders/orders/total/' + month + '/month', function(res){
+				$('#current-month-orders').text(res.orders);
+			});
+		}
+
+		function getLastMonthOrders(){
+			month = moment().subtract(1, 'month').format('M');
+
+			$.get('/api/riders/orders/total/' + month + '/month', function(res){
+				$('#previous-month-orders').text(res.orders);
+			});
 		}
 
 		$('#date-picker').on('changeDate', function() {
