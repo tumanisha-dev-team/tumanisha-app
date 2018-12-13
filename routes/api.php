@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('riders')->group(function(){
+	Route::get('/', 'API\RiderController@index');
+	Route::get('/orders/{date}', 'API\RiderController@getRidersOrderByDate');
+	Route::post('orders/add', 'API\RiderController@storeOrders');
+});

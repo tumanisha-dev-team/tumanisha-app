@@ -30,6 +30,10 @@ class Rider extends Model
 		'license_url'
     ];
 
+    public function orders(){
+    	return $this->hasMany('App\RiderNumber', 'employee_id', 'id');
+    }
+
     public function work_experiences(){
     	return $this->hasMany('App\RiderExperience');
     }
