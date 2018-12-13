@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Rider;
-use App\riderNumbers;
+use App\RiderNumber;
 
 class RiderController extends Controller
 {
@@ -39,6 +39,26 @@ class RiderController extends Controller
     		];
     	}
 
-    	return $data;
+      foreach ($data as $order) {
+        $riderNumbers = new RiderNumber();
+        if ($order['orders_id'] != "" && !is_null($order['orders_id'])) {
+          $riderNumbers = RiderNumber::find($order['orders_id']);
+        }
+
+        if ($order['orders'] != "") {
+          $riderNumbers->orders = $order['orders'];
+          $riderNumbers->orders_date = $order['orders_date'];
+          $riderNumbers->comments = $order['comment'];
+          $riderNumbers->employee_id = $order['id'];
+
+          $riderNumbers->save();
+        }else{
+          if ($order['orders_id'] != "" && !is_null($order['orders_id'])) {
+            $riderNumbers->delete();
+          }
+        }
+      }
+
+    	return $this->getRidersOrderByDate($request->orders_date);
     }
 }

@@ -15,6 +15,7 @@
 	<link href="{{ asset('dashboard/css/bootstrap.min.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/font-awesome/css/font-awesome.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('node_modules/toastr/build/toastr.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/spinkit/css/spinkit.min.css') }}">
 
 	<link href="{{ asset('dashboard/css/nifty.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
@@ -23,7 +24,7 @@
 	<script src="{{ asset('dashboard/plugins/pace/pace.min.js') }}"></script>
 
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
-	
+
 
 	@yield('css')
 </head>
@@ -216,13 +217,14 @@
 		<button class="scroll-top btn">
 			<i class="pci-chevron chevron-up"></i>
 		</button>
-		
+
 	</div>
 	@yield('modal')
 	<!-- Javascript -->
 	<script type="text/javascript" src="{{ asset('dashboard/js/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('dashboard/js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('node_modules/toastr/build/toastr.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('dashboard/js/jquery.blockUI.js') }}"></script>
 	@if(session()->has('success'))
 	<script type="text/javascript">
 		toastr.success("{{ session()->get('success') }}", "Success");
@@ -232,6 +234,20 @@
 		toastr.error("{{ session()->get('error') }} ", "Error");
 	</script>@endif
 	<script type="text/javascript">
+	var pulseLoader = '<div class="sk-spinner sk-spinner-pulse"></div>';
+	var cubesLoader = '<div class="sk-wandering-cubes"><div class="sk-cube sk-cube1"></div><div class="sk-cube sk-cube2"></div></div>'
+
+	var blockObj = {
+		message: cubesLoader,
+		css:  {
+			border: 'none',
+			padding: '15px',
+			backgroundColor: 'none',
+			'-webkit-border-radius': '10px',
+			'-moz-border-radius': '10px',
+			color: '#fff'
+		}
+	}
 		$(document).ready(function(){
 			$('.table-responsive').on('show.bs.dropdown', function () {
 				$('.table-responsive').css( "overflow", "inherit" );
@@ -244,7 +260,7 @@
 	</script>
 	@yield('js')
 	<script type="text/javascript" src="{{ asset('dashboard/js/nifty.min.js') }}"></script>
-	
+
 	<!-- <script type="text/javascript" src="{{ asset('dashboard/js/demo/nifty-demo.min.js') }}"></script> -->
 </body>
 </html>

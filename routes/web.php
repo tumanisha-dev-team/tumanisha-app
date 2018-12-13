@@ -31,9 +31,12 @@ Route::prefix('employees')->group(function(){
 	Route::post('/rider/add', 'Dashboard\EmployeeController@store')->name('post-new-rider');
 	Route::post('/rider/{id}/edit', 'Dashboard\EmployeeController@updateRider')->name('update-rider');
 	Route::get('/rider/profile_photo/{id}', function($id){
+		// echo $id;die;
 		$rider = \App\Rider::find($id);
-
-		return response()->download(storage_path("app/" . $rider->photo_url));
+		if ($rider->photo_url) {
+			// echo $rider->photo_url;die;
+			return response()->download(storage_path("app/" . $rider->photo_url));
+		}
 	})->name('rider-profile');
 
 	Route::get('/rider/numbers', 'Dashboard\RiderNumbersController@index')->name('rider-numbers');
