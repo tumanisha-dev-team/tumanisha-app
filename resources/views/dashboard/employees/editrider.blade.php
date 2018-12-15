@@ -5,6 +5,7 @@
 @section('css')
 <link href="{{ asset('dashboard/plugins/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/bootstrap-validator/bootstrapValidator.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
 @endsection
 
 @section('content')
@@ -169,6 +170,16 @@
 										</div>
 									</div>
 								</fieldset>
+								
+								<fieldset>
+									<legend>HR Information</legend>
+									<div class="form-group">
+										<div class="col-lg-6">
+											{!! Form::label('starting_date', 'Official Starting Date', ['class' => 'control-label']) !!}
+											{!! Form::text('starting_date', NULL, ['class' => 'form-control']) !!}
+										</div>
+									</div>
+								</fieldset>
 							</div>
 
 							<!-- <div id="education-history" class="tab-pane">
@@ -269,4 +280,19 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('js')
+<script src="{{ asset('dashboard/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		starting_date = $('input[name="starting_date"]').datepicker({
+			format: 'MM dd, yyyy',
+			clearBtn: true,
+			disableTouchKeyboard: true,
+			autoclose: true,
+			todayHighlight: true,
+		});
+	});
+</script>
 @endsection

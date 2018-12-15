@@ -27,7 +27,8 @@ class Rider extends Model
 		'hair_color',
 		'photo_url',
 		'id_url',
-		'license_url'
+		'license_url', 
+		'starting_date'
     ];
 
     public function orders(){
@@ -45,4 +46,8 @@ class Rider extends Model
     public function getRiderAvatarAttribute(){
     	return ($this->photo_url) ? route('rider-profile', $this->id) : '/dashboard/img/profile-photos/2.png';
     }
+	
+	public function getStartingDateAttribute($value){
+		return \Carbon\Carbon::parse($value)->format('F d, Y');
+	}
 }

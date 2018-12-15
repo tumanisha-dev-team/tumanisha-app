@@ -26,7 +26,7 @@
 	@forelse($riders as $rider)
 	<div class="col-sm-4 col-md-3">
 		<div class="panel pos-rel">
-			<div class="pad-all text-center">
+			<div class="pad-all">
 				<div class="widget-control">
 					<div class="btn-group dropdown">
 						<a href="#" class="dropdown-toggle btn btn-trans" data-toggle="dropdown" aria-expanded="false"><i class="demo-psi-dot-vertical icon-lg"></i></a>
@@ -40,13 +40,27 @@
 						</ul>
 					</div>
 				</div>
+				
+				<div class = "pad-all">
+					<div class = "media pad-ver">
+						<div class = "media-left">
+							<a href="#" class="box-inline">
+								<img alt="Profile Picture" class="img-md img-circle" src="{{ $rider->rider_avatar }}">
+							</a>
+						</div>
+						
+						<div class = "media-body pad-top">
+							<a class = "box-inline" href="">
+								<span class = "text-md text-semibold text-main">{{ $rider->first_name . ' ' . $rider->last_name }}</span>
+								<p class="text-sm">Rider</p>
+							</a>
+							
+						</div>
+					</div>
+				</div>
 
-				<a href="#">
-					<img alt="Profile Picture" class="img-lg img-circle mar-ver" src="{{ $rider->rider_avatar }}">
-					<p class="text-lg text-semibold mar-no text-main">{{ $rider->first_name . ' ' . $rider->last_name }}</p>
-					<p class="text-sm">Rider</p>
-					<p class="text-sm">Born on: {{ \Carbon\Carbon::parse($rider->date_of_birth)->format('dS F, Y') }}</p>
-				</a>
+				<p class="pad-btm bord-bt text-sm">Born on: {{ \Carbon\Carbon::parse($rider->date_of_birth)->format('dS F, Y') }}</p>
+				
 			</div>
 		</div>
 	</div>

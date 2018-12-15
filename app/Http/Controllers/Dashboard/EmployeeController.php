@@ -46,6 +46,7 @@ class EmployeeController extends Controller
             'height'                =>  'required',
             'eye_color'             =>  'required',
             'hair_color'            =>  'required',
+			'starting_date'			=>	'required'
         ]);
 
         $rider->first_name = $request->input('first_name');
@@ -64,6 +65,7 @@ class EmployeeController extends Controller
         $rider->height = $request->input('height');
         $rider->eye_color = $request->input('eye_color');
         $rider->hair_color = $request->input('hair_color');
+		$rider->starting_date = $request->input('starting_date');
 
         if ($request->hasFile('image')) {
             $this->validate($request, [
@@ -103,6 +105,7 @@ class EmployeeController extends Controller
             'height'                =>  'required',
             'eye_color'             =>  'required',
             'hair_color'            =>  'required',
+			'starting_date'			=>	'required'
         ]);
 
         $rider->first_name = $request->input('first_name');
@@ -121,6 +124,7 @@ class EmployeeController extends Controller
         $rider->height = $request->input('height');
         $rider->eye_color = $request->input('eye_color');
         $rider->hair_color = $request->input('hair_color');
+		$rider->starting_date = new \Carbon\Carbon($request->input('starting_date'));
 
         if ($request->hasFile('image')) {
             $this->validate($request, [
