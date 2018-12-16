@@ -103,6 +103,7 @@
 
 		function manageBeforeAfterButtons(currentDate){
 			difference = currentDate.diff(moment(today), 'days');
+			console.log(difference);
 			if (difference == -1) {
 				$('#date-after').prop('disabled', true);
 			}else{
@@ -201,7 +202,7 @@
 				src = "{{ asset('/dashboard/img/profile-photos/2.png') }}"
 			}
 
-			$table += "<tr><input type='hidden' name='id[]' value='"+rider.id+"' /><input type='hidden' name='orders_id[]' value='"+rider.orders_id+"' /><td><img class = 'img-sm img-responsive' src = '"+src+"' /></td><th>"+rider.first_name + " " + rider.last_name +"</th><td><input type = 'number' class = 'form-control orders' name='orders[]' value='"+orders+"'/></td><td><textarea name = 'comments[]' class = 'form-control' rows='1'>"+rider.comments+"</textarea></td></tr>";
+			$table += "<tr><input type='hidden' name='id[]' value='"+rider.id+"' /><input type='hidden' name='orders_id[]' value='"+rider.orders_id+"' /><td><img class = 'img-sm img-circle img-responsive' src = '"+src+"' /></td><th>"+rider.first_name + " " + rider.last_name +"</th><td><input type = 'number' class = 'form-control orders' name='orders[]' value='"+orders+"'/></td><td><textarea name = 'comments[]' class = 'form-control' rows='1'>"+rider.comments+"</textarea></td></tr>";
 		});
 		$table += "</table></form>";
 
