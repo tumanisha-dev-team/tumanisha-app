@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class RiderExperienceReferee extends Model
 {
+    use LogsActivity;
+    protected static $logAttributes = ['*'];
     protected $fillable = [
     	'rider_experiences_id',
 		'referee_name',

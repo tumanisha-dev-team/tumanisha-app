@@ -3,14 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 use Carbon\Carbon;
 
 class Invoice extends Model
 {
-	protected $my_date_format = 'Y-m-d';
+		use LogsActivity;
+		protected $my_date_format = 'Y-m-d';
     protected $fillable = ['invoice_no', 'from', 'to', 'amount', 'tax', 'uploaded_by', 'status', 'invoice_file_url', 'invoice_date'];
-
+		protected static $logAttributes = ['*'];
     public function user(){
     	return $this->belongsTo('App\User', 'uploaded_by', 'id');
     }

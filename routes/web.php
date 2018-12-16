@@ -30,6 +30,8 @@ Route::prefix('employees')->group(function(){
 	Route::get('/rider/{id}/edit', 'Dashboard\EmployeeController@editRider')->name('edit-rider');
 	Route::post('/rider/add', 'Dashboard\EmployeeController@store')->name('post-new-rider');
 	Route::post('/rider/{id}/edit', 'Dashboard\EmployeeController@updateRider')->name('update-rider');
+	Route::get('/rider/{id}/details', 'Dashboard\EmployeeController@details')->name('rider-details');
+	Route::get('/riders/schedule/weeklyoffdays', 'Dashboard\EmployeeController@weeklyschedule')->name('rider-off-days');
 	Route::get('/rider/profile_photo/{id}', function($id){
 		// echo $id;die;
 		$rider = \App\Rider::find($id);

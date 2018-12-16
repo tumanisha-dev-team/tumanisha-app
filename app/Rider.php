@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Rider extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
 		'first_name',
 		'last_name',
@@ -27,9 +30,11 @@ class Rider extends Model
 		'hair_color',
 		'photo_url',
 		'id_url',
-		'license_url', 
+		'license_url',
 		'starting_date'
     ];
+
+    protected static $logAttributes = ['*'];
 
     public function orders(){
     	return $this->hasMany('App\RiderNumber', 'employee_id', 'id');
@@ -46,7 +51,11 @@ class Rider extends Model
     public function getRiderAvatarAttribute(){
     	return ($this->photo_url) ? route('rider-profile', $this->id) : '/dashboard/img/profile-photos/2.png';
     }
-	
+
+    public function getNameAttribute(){
+      return "{$this->first_name} {$this->last_name}";
+    }
+
 	public function getStartingDateAttribute($value){
 		return \Carbon\Carbon::parse($value)->format('F d, Y');
 	}

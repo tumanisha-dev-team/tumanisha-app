@@ -26,7 +26,7 @@
 	@forelse($riders as $rider)
 	<div class="col-sm-4 col-md-3">
 		<div class="panel pos-rel">
-			<div class="pad-all">
+			<div class="pad-all text-center">
 				<div class="widget-control">
 					<div class="btn-group dropdown">
 						<a href="#" class="dropdown-toggle btn btn-trans" data-toggle="dropdown" aria-expanded="false"><i class="demo-psi-dot-vertical icon-lg"></i></a>
@@ -40,27 +40,19 @@
 						</ul>
 					</div>
 				</div>
-				
-				<div class = "pad-all">
-					<div class = "media pad-ver">
-						<div class = "media-left">
-							<a href="#" class="box-inline">
-								<img alt="Profile Picture" class="img-md img-circle" src="{{ $rider->rider_avatar }}">
-							</a>
+				<a href="#">
+            <img alt="Profile Picture" class="img-lg img-circle mar-ver" src="{{ $rider->rider_avatar }}">
+            <p class="text-lg text-semibold mar-no text-main">{{ $rider->first_name . ' ' . $rider->last_name }}</p>
+            <p class="text-sm">Rider</p>
+            <p class="text-sm">Date started: {{ \Carbon\Carbon::parse($rider->date_started)->format('dS F Y') }}</p>
+        </a>
+				<div class="text-center pad-to">
+						<div class="btn-group">
+								<a href="{{ route('rider-details', $rider->id) }}" class="btn btn-sm btn-default"><i class="demo-pli-receipt-4 icon-lg icon-fw"></i> Details</a>
+								<a href="#" class="btn btn-sm btn-default"><i class="demo-pli-mail icon-lg icon-fw"></i> Email</a>
+					      <a href="{{ route('edit-rider', $rider->id) }}" class="btn btn-sm btn-default"><i class="demo-pli-pen-5 icon-lg icon-fw"></i> Edit</a>
 						</div>
-						
-						<div class = "media-body pad-top">
-							<a class = "box-inline" href="">
-								<span class = "text-md text-semibold text-main">{{ $rider->first_name . ' ' . $rider->last_name }}</span>
-								<p class="text-sm">Rider</p>
-							</a>
-							
-						</div>
-					</div>
 				</div>
-
-				<p class="pad-btm bord-bt text-sm">Born on: {{ \Carbon\Carbon::parse($rider->date_of_birth)->format('dS F, Y') }}</p>
-				
 			</div>
 		</div>
 	</div>

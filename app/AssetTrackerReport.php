@@ -5,10 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Enums\ReportStatus;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class AssetTrackerReport extends Model
 {
+    use LogsActivity;
     protected $fillable = ["assets_id", "report_date", "status", "description"];
+    protected static $logAttributes = ['*'];
 
 
     public function getStatusAttribute($value){

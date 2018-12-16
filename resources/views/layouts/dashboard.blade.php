@@ -198,6 +198,13 @@
 											<span class="menu-title">Rider Numbers</span>
 										</a>
 									</li>
+
+									<li>
+										<a href="{{ route('rider-off-days') }}">
+											<i class="demo-pli-calendar-4"></i>
+											<span class="menu-title">Rider Weekly Off Schedule</span>
+										</a>
+									</li>
 									@endif
 								</ul>
 							</div>
@@ -238,6 +245,7 @@
 	var cubesLoader = '<div class="sk-wandering-cubes"><div class="sk-cube sk-cube1"></div><div class="sk-cube sk-cube2"></div></div>'
 
 	var blockObj = {
+		baseZ: 10000,
 		message: cubesLoader,
 		css:  {
 			border: 'none',

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Rider;
 use App\RiderNumber;
+use App\RiderSchedule;
 
 class RiderController extends Controller
 {
@@ -75,5 +76,27 @@ class RiderController extends Controller
       }
 
     	return $this->getRidersOrderByDate($request->orders_date);
+    }
+
+    function storeRiderSchedule(Request $request){
+      $schedule = new RiderSchedule();
+
+      $this->validate($request, [
+        'rider_id'  =>  'required',
+        'type'      =>  'required',
+        'from'      =>  'required',
+        'to'        =>  'required'
+      ]);
+
+      return RiderSchedule::create($request->all());
+    }
+
+    function getMonthlySchedule($month){
+      $schedule = RiderSchedule::where(\DB::raw('MONTH(`from`)'), $month)
+                                ->orWhere(\DB::raw('MONTH(`to`)'), $month)
+                                ->with('rider')
+                                ->get();
+
+      return $schedule;
     }
 }

@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Yadahan\AuthenticationLog\AuthenticationLogable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TaylorNetwork\UsernameGenerator\Generator;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, AuthenticationLogable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'email', 'password', 'user_role', 
+        'name', 'username', 'email', 'password', 'user_role',
     ];
 
     /**

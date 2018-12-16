@@ -73,7 +73,7 @@ class EmployeeController extends Controller
             ]);
             $rider->photo_url = $request->file('image')->store('profiles');
         }
-        
+
 
         $rider->save();
         return redirect()->route('riders-list')->with('success', 'Successfully added a rider');
@@ -124,7 +124,7 @@ class EmployeeController extends Controller
         $rider->height = $request->input('height');
         $rider->eye_color = $request->input('eye_color');
         $rider->hair_color = $request->input('hair_color');
-		$rider->starting_date = new \Carbon\Carbon($request->input('starting_date'));
+				$rider->starting_date = new \Carbon\Carbon($request->input('starting_date'));
 
         if ($request->hasFile('image')) {
             $this->validate($request, [
@@ -132,9 +132,23 @@ class EmployeeController extends Controller
             ]);
             $rider->photo_url = $request->file('image')->store('profiles');
         }
-        
+
 
         $rider->save();
         return redirect()->back()->with('success', 'Successfully updated rider information');
     }
+
+		function details($id){
+				$data['rider'] = Rider::find($id);
+				return view('dashboard.employees.details')->with($data);
+		}
+
+		function weeklyschedule(){
+			$riders = Rider::all();
+			$riders = $riders->each(function($model){
+				$model->setAppends(['name']);
+			});
+			$data['riders'] = $riders->pluck('name', 'id');
+			return view('dashboard.employees.schedule')->with($data);
+		}
 }
