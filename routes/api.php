@@ -24,6 +24,7 @@ Route::prefix('riders')->group(function(){
 
 	Route::get('orders/total/{month}/month', 'API\RiderController@getMonthOrders');
 
+	Route::get('schedule', 'API\RiderController@getSchedule');
   Route::get('schedule/{month}', 'API\RiderController@getMonthlySchedule');
   Route::post('schedule/add', 'API\RiderController@storeRiderSchedule');
 });

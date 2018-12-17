@@ -139,9 +139,10 @@ var calendar;
         right: 'month'
       },
       editable: false,
+      events: '/api/riders/schedule/'
     });
 
-    getMonthlySchedule();
+    // getMonthlySchedule();
     // calendar.fullCalendar('renderEvent', {
     //   title: 'Chrispine Otaalo',
     //   start: new Date(),

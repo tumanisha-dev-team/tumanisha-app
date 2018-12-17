@@ -99,4 +99,23 @@ class RiderController extends Controller
 
       return $schedule;
     }
+
+    function getSchedule(Request $request){
+      $schedule = RiderSchedule::whereBetween('from', [$request->start, $request->end])
+                                ->with('rider')
+                                ->get();
+
+      $eventsArray = [];
+
+      foreach($schedule as $s){
+        $eventsArray[] = [
+          'title'     =>  $s->rider->name,
+          'start'     =>  $s->from,
+          'end'       =>  $s->to,
+          'allDay'    =>  true,
+          'className' =>  ($s->type == "off") ? "purple" : "danger"
+        ];
+      }
+      return $eventsArray;
+    }
 }
