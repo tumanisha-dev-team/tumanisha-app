@@ -232,6 +232,7 @@
 	<script type="text/javascript" src="{{ asset('dashboard/js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('node_modules/toastr/build/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('dashboard/js/jquery.blockUI.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('dashboard/plugins/sweetalert/sweetalert.min.js') }}"></script>
 	@if(session()->has('success'))
 	<script type="text/javascript">
 		toastr.success("{{ session()->get('success') }}", "Success");

@@ -3,7 +3,7 @@
 @section('title', 'Rider Off Days Scheduling')
 
 @section('css')
-<link href="{{ asset('dashboard/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
+<link href="{{ asset('dashboard/plugins/fullcalendar/v3.9/fullcalendar.min.css') }}" rel="stylesheet">
 <link href="{{ asset('dashboard/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
 @endsection
@@ -13,7 +13,7 @@
     <div class="panel-body">
         <div class="fixed-fluid">
             <div class="fixed-sm-300 pull-sm-left fixed-right-border">
-                <button class="btn btn-block btn-purple btn-md" data-toggle = "modal" data-target="#add-event-modal">Add Rider Off Schedule</button>
+                <button class="btn btn-block btn-purple btn-md" data-title = "Add Rider Schedule" data-toggle = "modal" data-target="#add-event-modal">Add Rider Off Schedule</button>
 
                 <div id="riders">
                   <div class="list-group bg-trans pad-ver bord-ver">
@@ -41,6 +41,7 @@
 				<h4 class="modal-title">Add Rider Schedule</h4>
 			</div>
       {{ Form::open(['files' => true, 'url' => '/api/riders/schedule/add', 'id'=>'schedule-form']) }}
+      {{ Form::hidden('id', null) }}
       <div class="modal-body">
         <div id="error-alert">
           <div class="alert alert-danger">
@@ -74,6 +75,7 @@
         </div>
       </div>
       <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" id="delete-schedule">Delete Schedule?</button>
 				<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
 				<button class="btn btn-primary" id="save-schedule">Save changes</button>
 			</div>
@@ -86,15 +88,16 @@
 @section('js')
 <script src="{{ asset('dashboard/plugins/fullcalendar/lib/moment.min.js') }}"></script>
 <script src="{{ asset('dashboard/plugins/fullcalendar/lib/jquery-ui.custom.min.js') }}"></script>
-<script src="{{ asset('dashboard/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('dashboard/plugins/fullcalendar/v3.9/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('dashboard/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 <!--Full Calendar [ SAMPLE ]-->
 <!-- <script src="{{ asset('dashboard/js/demo/misc-fullcalendar.js') }}"></script> -->
 <script type="text/javascript">
 var calendar;
+var datePicker;
   $(document).ready(function(){
     $('#error-alert').hide();
-    $('#demo-dp-range .input-daterange').datepicker({
+   datePicker = $('#demo-dp-range .input-daterange').datepicker({
         format: 'MM dd, yyyy',
         todayBtn: 'linked',
         autoclose: true,
@@ -117,9 +120,10 @@ var calendar;
         success: function(res){
           $('body').unblock();
           toastr.success("Successfully added rider to schedule");
+          $('#add-event-modal').modal('hide');
+          calendar.fullCalendar('refetchEvents');
         },
         error: function(jqXHR, status, error){
-          console.error(jqXHR.responseJSON);
           $('body').unblock();
           toastr.error("There was an error while trying to add the rider to the schedule.\n", "Please try again");
           error_html = "<p>Please handle the following errors:<p><p>"+jqXHR.responseJSON.message+"</p><ul>";
@@ -136,19 +140,60 @@ var calendar;
       header: {
         left: 'prev,next,today',
         center: 'title',
-        right: 'month'
+        right: 'listWeek,month'
       },
+      defaultView: 'listWeek',
       editable: false,
-      events: '/api/riders/schedule/'
+      events: '/api/riders/schedule/',
+      eventClick: function(event, jsEvent, view){
+        openModal(event);
+      }
     });
 
-    // getMonthlySchedule();
-    // calendar.fullCalendar('renderEvent', {
-    //   title: 'Chrispine Otaalo',
-    //   start: new Date(),
-    //   allDay: true,
-    //   className: 'danger'
-    // });
+    $('#add-event-modal').on('hide.bs.modal', function(event){
+        // var modal = $(this);
+        // idInput = modal.find('input[name="id"]');
+        // riderSelect = modal.find('select[name="rider_id"]');
+        // typeSelect = modal.find('select[name="type"]');
+        // fromText = modal.find('input[name="from"]');
+        // toText = modal.find('input[name="to"]')
+        // notes = modal.find('textarea[name="notes"]');
+
+        // idInput.val("");
+        // riderSelect.val(null);
+        // typeSelect.val(null);
+        // fromText.val("");
+        // toText.val("");
+        // notes.val("");
+      
+    });
+
+    $('#add-event-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      var title = button.data('title');
+      if(title){
+        var modal = $(this);
+
+        $('#delete-schedule').hide();
+        modal.find('.modal-title').text(title);
+
+        idInput = modal.find('input[name="id"]');
+        riderSelect = modal.find('select[name="rider_id"]');
+        typeSelect = modal.find('select[name="type"]');
+        fromText = modal.find('input[name="from"]');
+        toText = modal.find('input[name="to"]')
+        notes = modal.find('textarea[name="notes"]');
+
+        idInput.val("");
+        riderSelect.val(null);
+        typeSelect.val(null);
+        fromText.val("");
+        toText.val("");
+        notes.val("");
+      }else{
+        $('#delete-schedule').show();
+      }
+    });
   });
 
 function getCurrentCalendarMonth(){
@@ -171,7 +216,6 @@ function getMonthlySchedule(){
         $('body').unblock();
         events = [];
         $.each(res, function(key, event){
-          console.log(event);
           event = {
             title: event.rider.first_name + " " + event.rider.last_name,
             start: new Date(event.from),
@@ -182,7 +226,6 @@ function getMonthlySchedule(){
 
           events.push(event);
         });
-        console.log(events);
         calendar.fullCalendar('renderEvents', events);
     },
     error: function(){
@@ -190,6 +233,70 @@ function getMonthlySchedule(){
         toastr.error("There was an error getting fetching this month's data", "Oops! There was an error");
     }
   });
+}
+
+function openModal(data){
+  var modal = $('#add-event-modal');
+  modal.modal('show');
+
+  modal.find('.modal-title').text('Editing Schedule');
+
+  idInput = modal.find('input[name="id"]');
+  riderSelect = modal.find('select[name="rider_id"]');
+  typeSelect = modal.find('select[name="type"]');
+  fromText = modal.find('input[name="from"]');
+  toText = modal.find('input[name="to"]')
+  notes = modal.find('textarea[name="notes"]');
+
+  idInput.val(data.id);
+  riderSelect.val(data.rider_id);
+  typeSelect.val(data.type);
+  fromText.val(moment(data.dates.from).format('MMMM D, YYYY'));
+  toText.val(moment(data.dates.to).format('MMMM D, YYYY'));
+  notes.val(data.notes);
+
+  $('#demo-dp-range .input-daterange').datepicker('destroy');
+
+  datePicker = $('#demo-dp-range .input-daterange').datepicker({
+      format: 'MM dd, yyyy',
+      todayBtn: 'linked',
+      autoclose: true,
+      todayHighlight: true
+  });
+
+$('#delete-schedule').click(function(){
+	swal({
+		title: "Are you sure?",
+		text: "Once deleted, you will not be able to recover this schedule!",
+		icon: "warning",
+		buttons: {
+			cancel: "Cancel",
+			willDelete: {
+				text: "Yes, Delete!",
+				closeModal: false,
+			},
+		},
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			$.ajax({
+				url: '/api/riders/schedule/' + data.id,
+				method: 'DELETE',
+				success: function(res){
+					swal("Deleted!", "Successfully deleted the schedule!", "success");
+					$('#add-event-modal').modal('hide');
+					calendar.fullCalendar('refetchEvents')
+				},
+				error: function(){
+					swal("Error!", "There was an error processing your request!", "error");
+				}
+			});
+		}
+	});
+});
+
+  // console.log(datePicker.datepicker('update', [data.dates.from, data.dates.to]));
 }
 </script>
 @endsection

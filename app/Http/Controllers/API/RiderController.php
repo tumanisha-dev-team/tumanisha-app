@@ -79,16 +79,28 @@ class RiderController extends Controller
     }
 
     function storeRiderSchedule(Request $request){
-      $schedule = new RiderSchedule();
+    	$this->validate($request, [
+          'rider_id'  =>  'required',
+          'type'      =>  'required',
+          'from'      =>  'required',
+          'to'        =>  'required'
+        ]);
 
-      $this->validate($request, [
-        'rider_id'  =>  'required',
-        'type'      =>  'required',
-        'from'      =>  'required',
-        'to'        =>  'required'
-      ]);
+		if ($request->id == "") {
+			$schedule = new RiderSchedule();
+		}else{
+			$schedule = RiderSchedule::find($request->id);
+		}
 
-      return RiderSchedule::create($request->all());
+		$schedule->rider_id = $request->rider_id;
+		$schedule->type = $request->type;
+		$schedule->from = $request->from;
+		$schedule->to = $request->to;
+		$schedule->notes = $request->notes;
+
+		$schedule->save();
+
+		return $schedule;
     }
 
     function getMonthlySchedule($month){
@@ -108,14 +120,28 @@ class RiderController extends Controller
       $eventsArray = [];
 
       foreach($schedule as $s){
+        $enddate = new \Carbon\Carbon($s->to);
+
         $eventsArray[] = [
+          'id'        =>  $s->id,
           'title'     =>  $s->rider->name,
+          'rider_id'  =>  $s->rider_id,
           'start'     =>  $s->from,
-          'end'       =>  $s->to,
+          'end'       =>  $enddate->addDays(1)->format('Y-m-d'),
           'allDay'    =>  true,
-          'className' =>  ($s->type == "off") ? "purple" : "danger"
+          'className' =>  ($s->type == "off") ? "purple" : "danger",
+          'type'      =>  $s->type,
+          'notes'     =>  $s->notes,
+          'dates'     =>  [
+            'from'    =>  $s->from,
+            'to'      =>  $s->to
+          ]
         ];
       }
       return $eventsArray;
     }
+
+	function deleteSchedule($id){
+		return RiderSchedule::destroy($id);
+	}
 }
