@@ -8,8 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Enums\Religion;
 
 use App\Rider;
+use App\RiderSchedule;
 
 use Intervention\Image\ImageManagerStatic as Image;
+use PDF;
 
 class EmployeeController extends Controller
 {
@@ -151,4 +153,53 @@ class EmployeeController extends Controller
 			$data['riders'] = $riders->pluck('name', 'id');
 			return view('dashboard.employees.schedule')->with($data);
 		}
+
+    function generateScheduleReport(Request $request){
+        $duration = $request->duration;
+        $date_format = "Y-m-d";
+
+        $start_date = $end_date = new \Carbon\Carbon();
+        switch ($duration) {
+            case 'this-week':
+                $start_date = \Carbon\Carbon::now()->startOfWeek()->format($date_format);
+                $end_date = \Carbon\Carbon::now()->endOfWeek()->format($date_format);
+                break;
+
+            case 'last-week':
+                $last_week = \Carbon\Carbon::now()->subWeek();
+
+                $start_date = $last_week->startOfWeek()->format($date_format);
+                $end_date = $last_week->endOfWeek()->format($date_format);
+                break;
+
+            case 'this-month':
+                $start_date = (new \Carbon\Carbon('first day of last month'))->format($date_format);
+                $end_date = (new \Carbon\Carbon('last day of last month'))->format($date_format);
+                break;
+            
+            default:
+                break;
+        }
+
+        $schedule = RiderSchedule::whereBetween('from', [$start_date, $end_date])->get();
+
+        $cleanedSchedules = [];
+
+        foreach ($schedule as $s) {
+            $period = \Carbon\CarbonPeriod::create($s->from, $s->to);
+            foreach ($period as $date) {
+                $cleanedSchedules[$date->format('Y-m-d')][] = [
+                    'rider' =>  ucwords(strtolower($s->rider->name)),
+                    'type'  =>  $s->type
+                ];
+            }
+        }
+
+        $data['dates'] = $cleanedSchedules;
+        $data['start_date'] = $start_date;
+        $data['end_date'] = $end_date;
+
+        $pdf = PDF::loadView('pdf.schedule', $data);
+        return $pdf->stream('schedule.pdf');
+    }
 }

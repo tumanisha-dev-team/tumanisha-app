@@ -130,6 +130,7 @@ class RiderController extends Controller
           'end'       =>  $enddate->addDays(1)->format('Y-m-d'),
           'allDay'    =>  true,
           'className' =>  ($s->type == "off") ? "purple" : "danger",
+          'backgroundColor' => ($s->type == "off") ? "purple" : "red",
           'type'      =>  $s->type,
           'notes'     =>  $s->notes,
           'dates'     =>  [

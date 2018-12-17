@@ -6,6 +6,7 @@
 <link href="{{ asset('dashboard/plugins/fullcalendar/v3.9/fullcalendar.min.css') }}" rel="stylesheet">
 <link href="{{ asset('dashboard/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/css/demo/nifty-demo.min.css') }}"> --}}
 @endsection
 
 @section('content')
@@ -23,7 +24,27 @@
                     <p class="list-group-item list-item-sm"><span class="badge badge-danger badge-icon badge-fw pull-left"></span> Leave Day</p>
                   </div>
                 </div>
-            </div>
+
+                <p class="pad-hor mar-top text-main text-bold text-sm text-uppercase">Report</p>
+                <div class="pad-hor">
+                	<div class="form-group">
+						{{ Form::label('duration', 'Duration') }}
+						{{ Form::select('duration', ['this-week' => 'This Week', 'last-week' => 'Last Week' , 'this-month' => 'This Month'], null, ['class' => 'form-control']) }}
+					</div>
+					<div class="form-group">
+						{{ Form::checkbox('send-email', 'send', true) }}
+						{{ Form::label('send-email', 'Send me and email') }}
+					</div>
+
+					<div class="form-group">
+						{{ Form::label('format', 'Format', ['class' => 'control-label']) }}<br/>
+						{{ Form::radio('format', 'image') }} {{ Form::label('Image') }} {{ Form::radio('format', 'pdf', true) }} {{ Form::label('pdf', 'PDF') }}
+					</div>
+					<button class="btn btn-primary btn-md btn-block" id="generate-report">Generate Report</button>
+                </div>
+                
+			</div>
+                
             <div class="fluid">
                 <div id = "calendar"></div>
             </div>
@@ -168,6 +189,16 @@ var datePicker;
       
     });
 
+    $('#generate-report').click(function(){
+		var duration = $('select[name="duration"]').val();
+		var send_email = $('input[name="send-email"]').prop('checked');
+		var format = $('input[name="format"]').val();
+
+		var url = "{{ route('schedule-report') }}" + "?duration="+duration+"&email="+send_email+"&format="+format;
+		window.location = url;
+	});
+
+
     $('#add-event-modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget)
       var title = button.data('title');
@@ -263,7 +294,6 @@ function openModal(data){
       autoclose: true,
       todayHighlight: true
   });
-
 $('#delete-schedule').click(function(){
 	swal({
 		title: "Are you sure?",
