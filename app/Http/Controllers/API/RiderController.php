@@ -198,9 +198,15 @@ class RiderController extends Controller
 
       foreach ($period as $dt) {
         if (in_array($dt->format('Y-m-d'), $dates)) {
-          $response[$dt->format('Y-m-d')] = $formatMonthData[$dt->format('Y-m-d')];
+          $response[] = [
+            'date'   =>  $dt->format('Y-m-d'),
+            'number'  =>  (int)$formatMonthData[$dt->format('Y-m-d')]
+          ];
         }else{
-          $response[$dt->format('Y-m-d')] = "";
+          $response[] = [
+            'date'   =>  $dt->format('Y-m-d'),
+            'number'  =>  ""
+          ];
         }
       }
     }

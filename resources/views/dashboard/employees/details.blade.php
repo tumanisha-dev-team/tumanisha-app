@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <hr class="new-section-xs">
-                <div class="row" id="rider-monthly-stats">
+                <div class="row" id="rider-monthly-stats" style="max-height: 600px;">
                 	<div class="col-md-12">
                 		<div class="row form-group">
                 			<div class="col-md-4">
@@ -79,7 +79,7 @@
                 			</div>
                 		</div>
                 	</div>
-                	<div class="col-md-6">
+                	<div class="col-md-3 pad-all" style="height: 450px;overflow-y: scroll;">
                 		<div class="table-responsive">
                 			<table class="table table-striped">
                 				<thead>
@@ -88,15 +88,64 @@
                 				</thead>
                 				<tbody id="orders-table">
                 					<tr>
-                						<td>A</td>
-                						<td>20</td>
+                						<td colspan="2"><center>Data will appear here</center></td>
                 					</tr>
                 				</tbody>
                 			</table>
                 		</div>
                 		
                 	</div>
-                	<div class="col-md-6"></div>
+                	<div class="col-md-9">
+                		<div class="row">
+                			<div class="col-md-4">
+                                <div class="panel media middle pad-all mar-no">
+                                    <div class="media-left">
+                                        <span class="icon-wrap icon-wrap-sm icon-circle bg-success">
+                                            <i class="demo-pli-add-cart icon-2x"></i>
+                                        </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="text-2x mar-no text-semibold text-main" id="deliveries">0</p>
+                                        <p class="text-muted mar-no">Deliveries</p>
+                                    </div>
+                                </div>
+                			</div>
+
+                            <div class="col-md-4">
+                                <div class="panel media middle pad-all mar-no">
+                                    <div class="media-left">
+                                        <span class="icon-wrap icon-wrap-sm icon-circle bg-danger">
+                                            <i class="demo-pli-calendar-4 icon-2x"></i>
+                                        </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="text-2x mar-no text-semibold text-main" id="absentDays">0</p>
+                                        <p class="text-muted mar-no">Absent Days</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="panel media middle pad-all mar-no">
+                                    <div class="media-left">
+                                        <span class="icon-wrap icon-wrap-sm icon-circle bg-warning">
+                                            <i class="demo-pli-coin icon-2x"></i>
+                                        </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="h4 mar-no text-semibold text-main" id="expectedAmount">KSH 0</p>
+                                        <p class="text-muted mar-no">Expected Amount</p>
+                                    </div>
+                                </div>
+                            </div>
+                		</div>
+                        <hr class="new-section-xs" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="month-stats" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                	</div>
                 </div>
             </div>
         </div>
@@ -108,6 +157,7 @@
 <script type="text/javascript" src="{{ asset('dashboard/plugins/highcharts/code/highcharts.js') }}"></script>
 <script type="text/javascript" src="{{ asset('dashboard/plugins/highcharts/code/modules/drilldown.js') }}"></script>
 <script type="text/javascript" src="{{ asset('dashboard/plugins/momentjs/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/accounting.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
     	blockObj.message = foldingLoader;
@@ -155,9 +205,36 @@
     		success: function(res){
     			$('#rider-monthly-stats').unblock();
     			$('#orders-table').empty();
-    			$.each(res, function(date, orders){
-    				$('#orders-table').append("<tr><td>"+moment(date).format("Do MMM YYYY")+"</td><td>"+orders+"</td></tr>");
-    			});
+    			var totalOrders = 0;
+    			var absentDays = 0;
+                var categories = [];
+                var dayNo = [];
+    			if (res.length > 0) {
+    				$.each(res, function(key, data){
+    					formattedOrders = "";
+    					if (data.number == "") {
+    						formattedOrders = "N/A";
+    						totalOrders += 0;
+                            if(moment(data.date) <= moment()){
+    						  absentDays += 1;
+                            }
+    					}else{
+    						formattedOrders = data.number;
+    						totalOrders += data.number;
+    					}
+                        categories.push(moment(data.date).format('Do'));
+                        dayNo.push(formattedOrders);
+	    				$('#orders-table').append("<tr><td>"+moment(data.date).format("DD/MM/YYYY")+"</td><td>"+formattedOrders+"</td></tr>");
+	    			});
+    			}else{
+    				$('#orders-table').append("<tr><td colspan='2'><center>There is no data available for this month</center></td></tr>");
+    			}
+
+                $('#deliveries').text(totalOrders);
+    			$('#absentDays').text(absentDays);
+                var expectedAmount = accounting.formatMoney(totalOrders * 50, "KSH ", 0);
+                $('#expectedAmount').text(expectedAmount);
+                drawMonthNumbers(categories, dayNo, month + " " + year);
     		},
     		error: function(){
     			$('#rider-monthly-stats').unblock();
@@ -216,6 +293,57 @@
 				data: data.data
 			}]
 		});       
+    }
+
+    function drawMonthNumbers(categories, data, month){
+        // categories = [];
+        // data = [];
+        // for (var i = 1; i <= 8; i++) {
+        //  categories.push(i);
+        // }
+
+        // for (var i = 1; i <= 8; i++) {
+        //  data.push(Math.ceil(Math.random() * (30-0) + 0));
+        // }
+        Highcharts.chart('month-stats', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Rider Order Count'
+            },
+            subtitle: {
+                text: month
+            },
+            xAxis: {
+                categories: categories,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Orders'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y} orders</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'orders',
+                data: data
+            }]
+        });       
     }
 </script>
 @endsection
