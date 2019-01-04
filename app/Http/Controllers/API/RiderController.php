@@ -189,18 +189,21 @@ class RiderController extends Controller
 
     $response = [];
     if (count($monthData)) {
+      $formatMonthData = [];
+      foreach ($monthData as $data) {
+        $formatMonthData[$data->orders_date] = $data->orders;
+      }
+      $dates = array_keys($formatMonthData);
       $period = (\Carbon\CarbonPeriod::create($firstday, $lastday))->toArray();
-      foreach ($period as $date) {
-        foreach ($monthData as $data) {
-          if ($date->format('Y-m-d') == \Carbon\Carbon::parse($data->orders_date)->format('Y-m-d')) {
-            $response[$date->format('Y-m-d')] = $data->orders;
-          }else{
-            $response[$date->format('Y-m-d')] = "";
-          }
+
+      foreach ($period as $dt) {
+        if (in_array($dt->format('Y-m-d'), $dates)) {
+          $response[$dt->format('Y-m-d')] = $formatMonthData[$dt->format('Y-m-d')];
+        }else{
+          $response[$dt->format('Y-m-d')] = "";
         }
       }
     }
-
     return $response;
   }
 }
