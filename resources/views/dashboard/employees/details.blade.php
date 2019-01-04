@@ -26,12 +26,20 @@
                 <p><i class="demo-pli-mail icon-lg icon-fw"></i> {{ $rider->email }} </p>
 
                 <hr class="new-section-xs"/>
-				<div class="pad-all">
-					<span class="pad-ver text-main text-sm text-uppercase text-bold">Expected Earnings</span>
-					<p class="text-sm">{{ \Carbon\Carbon::now()->format('F Y') }}</p>
-					<p class="text-2x text-main">KSH. {{ number_format($current_month_numbers * 50) }}</p>
-				</div>
 
+                <div class="pad-all">
+                    <span class="text-bold text-main">Expected Earnings</span>
+                    <p class="text-sm">{{ \Carbon\Carbon::now()->format('F Y') }}</p>
+                    <p class="text-2x text-thin text-main">KSH. {{ number_format($current_month_numbers * 50) }}</p>
+                </div>
+
+                <hr class="new-section-xs"/>
+
+                <div class="pad-all">
+                    <span class="text-bold text-main">Best Number</span>
+                    <p class="text-sm">Lifetime</p>
+                    <p class="text-2x text-thin text-main">{{ $rider->orders->max('orders') }} Orders</p>
+                </div>
             </div>
 
             <div class="fluid">
