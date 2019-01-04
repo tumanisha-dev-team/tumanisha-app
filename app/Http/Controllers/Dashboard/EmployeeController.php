@@ -9,6 +9,7 @@ use App\Enums\Religion;
 
 use App\Rider;
 use App\RiderSchedule;
+use App\RiderNumber;
 
 use Intervention\Image\ImageManagerStatic as Image;
 use PDF;
@@ -140,19 +141,21 @@ class EmployeeController extends Controller
         return redirect()->back()->with('success', 'Successfully updated rider information');
     }
 
-		function details($id){
-				$data['rider'] = Rider::find($id);
-				return view('dashboard.employees.details')->with($data);
-		}
+	function details($id){
+		$data['rider'] = Rider::find($id);
+        $today = \Carbon\Carbon::now();
+        $data['current_month_numbers'] = RiderNumber::where('employee_id', $id)->whereBetween('orders_date', [$today->startOfMonth()->format('Y-m-d'), $today->endOfMonth()->format('Y-m-d')])->sum('orders');
+		return view('dashboard.employees.details')->with($data);
+	}
 
-		function weeklyschedule(){
-			$riders = Rider::all();
-			$riders = $riders->each(function($model){
-				$model->setAppends(['name']);
-			});
-			$data['riders'] = $riders->pluck('name', 'id');
-			return view('dashboard.employees.schedule')->with($data);
-		}
+	function weeklyschedule(){
+		$riders = Rider::all();
+		$riders = $riders->each(function($model){
+			$model->setAppends(['name']);
+		});
+		$data['riders'] = $riders->pluck('name', 'id');
+		return view('dashboard.employees.schedule')->with($data);
+	}
 
     function generateScheduleReport(Request $request){
         $duration = $request->duration;

@@ -37,6 +37,11 @@
                             <p class="text-5x text-thin text-main mar-no">{{ $rider->orders->sum('orders') }}</p>
                         </div>
                         <p class="text-sm">Data from {{ \Carbon\Carbon::parse($rider->orders->min('orders_date'))->format('dS F Y') }} to {{ \Carbon\Carbon::parse($rider->orders->max('orders_date'))->format('dS F Y') }}</p>
+                        <hr class="new-section-xs">
+                        <div class="text-lg">
+                            <p class="text-5x text-thin text-main mar-no">{{ $current_month_numbers }}</p>
+                        </div>
+                        <h3 class="text-main text-normal text-2x mar-no">This Month</h3>
                     </div>
                     <div class="col-md-9">
                         <div id="demo-bar-chart" style="height:350px"></div>
