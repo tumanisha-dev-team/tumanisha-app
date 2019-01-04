@@ -173,15 +173,17 @@ class EmployeeController extends Controller
                 break;
 
             case 'this-month':
-                $start_date = (new \Carbon\Carbon('first day of last month'))->format($date_format);
-                $end_date = (new \Carbon\Carbon('last day of last month'))->format($date_format);
+                $start_date = (new \Carbon\Carbon('first day of this month'))->format($date_format);
+                $end_date = (new \Carbon\Carbon('last day of this month'))->format($date_format);
                 break;
             
             default:
                 break;
         }
 
-        $schedule = RiderSchedule::whereBetween('from', [$start_date, $end_date])->get();
+        $schedule = RiderSchedule::whereBetween('from', [$start_date, $end_date])
+                                    ->orderBy('from', 'ASC')
+                                    ->get();
 
         $cleanedSchedules = [];
 

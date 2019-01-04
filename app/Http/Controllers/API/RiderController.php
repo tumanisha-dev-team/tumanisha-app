@@ -9,6 +9,9 @@ use App\Rider;
 use App\RiderNumber;
 use App\RiderSchedule;
 
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+
 class RiderController extends Controller
 {
     function index(){
@@ -145,4 +148,27 @@ class RiderController extends Controller
 	function deleteSchedule($id){
 		return RiderSchedule::destroy($id);
 	}
+
+  function getLast8Months(Request $request){
+    $rider_id = $request->rider_id;
+    $today = Carbon::now()->startOfMonth();
+    $monthsago = Carbon::now()->subMonths(7)->startOfMonth();
+
+    $period = CarbonPeriod::create($monthsago, '1 month', $today);
+
+    $response = [];
+    foreach ($period as $dt) {
+      $data = RiderNumber::where('employee_id', $rider_id)
+                          ->whereBetween('orders_date', [$dt->format('Y-m-d'), $dt->endOfMonth()->format('Y-m-d')])
+                          ->sum('orders');
+
+      $response[] = [
+        'month'   =>  $dt->format('F Y'),
+        'numbers' =>  (int)$data
+      ];
+      // echo $dt->endOfMonth(). "<br/>";
+    }
+
+    return $response;
+  }
 }

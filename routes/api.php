@@ -28,4 +28,6 @@ Route::prefix('riders')->group(function(){
 	Route::get('schedule/{month}', 'API\RiderController@getMonthlySchedule');
 	Route::delete('schedule/{id}', 'API\RiderController@deleteSchedule');
 	Route::post('schedule/add', 'API\RiderController@storeRiderSchedule');
+
+	Route::get('numbers/{rider_id}/last8Months', 'API\RiderController@getLast8Months');
 });

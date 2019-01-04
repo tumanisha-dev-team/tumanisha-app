@@ -40,6 +40,8 @@ Route::prefix('employees')->group(function(){
 	})->name('rider-profile');
 
 	Route::get('/rider/numbers', 'Dashboard\RiderNumbersController@index')->name('rider-numbers');
+	Route::get('/rider/numbers/summary', 'Dashboard\RiderNumbersController@riderSummary')->name('rider-numbers-summary');
+
 	Route::get('/riders/schedule', 'Dashboard\EmployeeController@generateScheduleReport')->name('schedule-report');
 });
 

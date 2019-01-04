@@ -18,16 +18,20 @@
 					<p class="pad-hor mar-top text-main text-bold text-sm text-uppercase">Statistics</p>
 					<!-- Menu list item -->
 					<a href="#" class="list-group-item list-item-sm">
-						Current Month: (December) <span id="current-month-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
+						Current Month: ({{ \Carbon\Carbon::now()->format('F') }}) <span id="current-month-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
 					</a>
 
 					<a href="#" class="list-group-item list-item-sm">
-						Previous Month: (November) <span id="previous-month-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
+						Previous Month: ({{ \Carbon\Carbon::now()->subMonth()->format('F') }}) <span id="previous-month-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
 					</a>
 
 					<a href="#" class="list-group-item list-item-sm">
-						Lifetime: (December) <span id="lifetime-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
+						Lifetime: <span id="lifetime-orders" class="badge badge-info badge-icon badge-fw pull-right">0</span>
 					</a>
+				</div>
+
+				<div class="pad-top pad-btm bord-btm">
+					<a class="btn btn-md btn-success btn-block" href="{{ route('rider-numbers-summary') }}">View Rider Summary</a>
 				</div>
 			</div>
 			<div class = 'fluid' id="order_container">
