@@ -145,8 +145,35 @@ class EmployeeController extends Controller
 		$data['rider'] = Rider::find($id);
         $today = \Carbon\Carbon::now();
         $data['current_month_numbers'] = RiderNumber::where('employee_id', $id)->whereBetween('orders_date', [$today->startOfMonth()->format('Y-m-d'), $today->endOfMonth()->format('Y-m-d')])->sum('orders');
+        $data['months'] = $this->getMonths();
+        $data['years'] = $this->getYears();
 		return view('dashboard.employees.details')->with($data);
 	}
+
+    function getMonths(){
+        $months = [];
+        for ($i=1; $i <= 12; $i++) { 
+            $months[] = \Carbon\Carbon::parse("2018-$i-01")->format('F');
+        }
+
+        return $months;
+    }
+
+    function getYears(){
+        $least_year = \Carbon\Carbon::parse(RiderNumber::min('orders_date'))->format('Y');
+        // $max_year = \Carbon\Carbon::parse(RiderNumber::max('orders_date'))->format('Y');
+        $max_year = \Carbon\Carbon::now()->format('Y');
+
+        $years = [];
+
+        if($least_year){
+            for ($i=$least_year; $i <= $max_year ; $i++) { 
+                $years[] = $i;
+            }
+        }
+
+        return $years;
+    }
 
 	function weeklyschedule(){
 		$riders = Rider::all();

@@ -243,7 +243,8 @@
 	</script>@endif
 	<script type="text/javascript">
 	var pulseLoader = '<div class="sk-spinner sk-spinner-pulse"></div>';
-	var cubesLoader = '<div class="sk-wandering-cubes"><div class="sk-cube sk-cube1"></div><div class="sk-cube sk-cube2"></div></div>'
+	var cubesLoader = '<div class="sk-wandering-cubes"><div class="sk-cube sk-cube1"></div><div class="sk-cube sk-cube2"></div></div>';
+	var foldingLoader = '<div class="sk-folding-cube"><div class="sk-cube1 sk-cube"></div><div class="sk-cube2 sk-cube"></div><div class="sk-cube4 sk-cube"></div><div class="sk-cube3 sk-cube"></div></div>';
 
 	var blockObj = {
 		baseZ: 10000,

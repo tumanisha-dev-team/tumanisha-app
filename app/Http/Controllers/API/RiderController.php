@@ -171,4 +171,36 @@ class RiderController extends Controller
 
     return $response;
   }
+
+  function getMonthNumbers(Request $request){
+    $rider_id = $request->rider_id;
+    $month = $request->month;
+    $year = $request->year;
+
+    $parsedDate = \Carbon\Carbon::parse("$month $year");
+    $firstday = $parsedDate->startOfMonth()->format('Y-m-d');
+    $lastday = $parsedDate->endOfMonth()->format('Y-m-d');
+
+    $monthData = RiderNumber::where('employee_id', $rider_id)
+                              ->whereBetween('orders_date', [$firstday, $lastday])
+                              ->get();
+
+    // dd($monthData);
+
+    $response = [];
+    if (count($monthData)) {
+      $period = (\Carbon\CarbonPeriod::create($firstday, $lastday))->toArray();
+      foreach ($period as $date) {
+        foreach ($monthData as $data) {
+          if ($date == \Carbon\Carbon::parse($data->orders_date)) {
+            $response[$date->format('Y-m-d')] = $data->orders;
+          }else{
+            $response[$date->format('Y-m-d')] = "";
+          }
+        }
+      }
+    }
+
+    return $response;
+  }
 }

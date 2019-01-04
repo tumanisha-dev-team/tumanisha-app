@@ -18,12 +18,19 @@
                     <h4 class="text-lg text-overflow mar-no">{{ $rider->first_name }} {{ $rider->last_name }}</h4>
                     <p class="text-sm text-muted">Rider</p>
                 </div>
-                <hr>
+                <hr class="new-section-xs">
 
                 <p class="pad-ver text-main text-sm text-uppercase text-bold">About Rider</p>
                 <p><i class="demo-pli-calendar-4 icon-lg icon-fw"></i> {{ \Carbon\Carbon::parse($rider->date_of_birth)->format('dS F Y') }}</p>
                 <p><i class="demo-pli-old-telephone icon-lg icon-fw"></i> {{ $rider->primary_phone_number }}</p>
                 <p><i class="demo-pli-mail icon-lg icon-fw"></i> {{ $rider->email }} </p>
+
+                <hr class="new-section-xs"/>
+				<div class="pad-all">
+					<span class="pad-ver text-main text-sm text-uppercase text-bold">Expected Earnings</span>
+					<p class="text-sm">{{ \Carbon\Carbon::now()->format('F Y') }}</p>
+					<p class="text-2x text-main">KSH. {{ number_format($current_month_numbers * 50) }}</p>
+				</div>
 
             </div>
 
@@ -47,6 +54,50 @@
                         <div id="demo-bar-chart" style="height:350px"></div>
                     </div>
                 </div>
+                <hr class="new-section-xs">
+                <div class="row" id="rider-monthly-stats">
+                	<div class="col-md-12">
+                		<div class="row form-group">
+                			<div class="col-md-4">
+                				<select class="form-control" name="month-select">
+                					@foreach($months as $month)
+                					<option value="{{ $month }}" @if($month == \Carbon\Carbon::now()->format('F')) selected="selected" @endif>{{ $month }}</option>
+                					@endforeach
+                				</select>
+                			</div>
+
+                			<div class="col-md-4">
+                				<select class="form-control" name="year-select">
+                					@foreach($years as $year)
+                					<option value="{{ $year }}" @if($year == \Carbon\Carbon::now()->format('Y')) selected="selected" @endif>{{ $year }}</option>
+                					@endforeach
+                				</select>
+                			</div>
+
+                			<div class="col-md-2">
+                				<button class="btn btn-purple" id="search-month-data">Search</button>
+                			</div>
+                		</div>
+                	</div>
+                	<div class="col-md-6">
+                		<div class="table-responsive">
+                			<table class="table table-striped">
+                				<thead>
+                					<th>Date</th>
+                					<th>Orders</th>
+                				</thead>
+                				<tbody id="orders-table">
+                					<tr>
+                						<td>A</td>
+                						<td>20</td>
+                					</tr>
+                				</tbody>
+                			</table>
+                		</div>
+                		
+                	</div>
+                	<div class="col-md-6"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -59,11 +110,12 @@
 <script type="text/javascript" src="{{ asset('dashboard/plugins/momentjs/moment.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+    	blockObj.message = foldingLoader;
     	$.ajax({
     		method: "GET",
     		url: "/api/riders/numbers/{{ $rider->id }}/last8Months",
     		beforeSend: function(){
-    			console.log("Request started");
+    			$('#demo-bar-chart').block(blockObj);
     		},
     		success: function(res){
     			// toastr.success("There was a response", "Yes!");
@@ -82,8 +134,36 @@
     			toastr.error("There was an error", "Whoops!");
     		}
     	});
+
+    	$('#search-month-data').click(function(){
+    		month = $('select[name="month-select"]').val();
+    		year = $('select[name="year-select"]').val();
+
+    		getMonthlyData(month, year)
+    	});
+
+    	$('#search-month-data').trigger('click');
 		
     });
+
+    function getMonthlyData(month, year){
+    	$.ajax({
+    		url: '/api/riders/numbers/{{ $rider->id }}/month/' + month + '/' + year,
+    		beforeSend: function(){
+    			$('#rider-monthly-stats').block(blockObj);
+    		},
+    		success: function(res){
+    			$('#rider-monthly-stats').unblock();
+    			$('#orders-table').empty();
+    			$.each(res, function(date, orders){
+    				$('#orders-table').append("<tr><td>"+moment(date).format("Do MMM YYYY")+"</td><td>"+orders+"</td></tr>");
+    			});
+    		},
+    		error: function(){
+    			$('#rider-monthly-stats').unblock();
+    		}
+    	});
+    }
 
     // function getLast8MonthsData
 

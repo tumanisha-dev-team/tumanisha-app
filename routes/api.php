@@ -30,4 +30,5 @@ Route::prefix('riders')->group(function(){
 	Route::post('schedule/add', 'API\RiderController@storeRiderSchedule');
 
 	Route::get('numbers/{rider_id}/last8Months', 'API\RiderController@getLast8Months');
+	Route::get('numbers/{rider_id}/month/{month}/{year}', 'API\RiderController@getMonthNumbers');
 });
