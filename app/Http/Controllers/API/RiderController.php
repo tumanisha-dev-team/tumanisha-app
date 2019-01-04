@@ -192,7 +192,7 @@ class RiderController extends Controller
       $period = (\Carbon\CarbonPeriod::create($firstday, $lastday))->toArray();
       foreach ($period as $date) {
         foreach ($monthData as $data) {
-          if ($date == \Carbon\Carbon::parse($data->orders_date)) {
+          if ($date->format('Y-m-d') == \Carbon\Carbon::parse($data->orders_date)->format('Y-m-d')) {
             $response[$date->format('Y-m-d')] = $data->orders;
           }else{
             $response[$date->format('Y-m-d')] = "";
