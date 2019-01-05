@@ -31,7 +31,8 @@ class Rider extends Model
 		'photo_url',
 		'id_url',
 		'license_url',
-		'starting_date'
+		'starting_date',
+		'jumia_no'
     ];
 
     protected static $logAttributes = ['*'];

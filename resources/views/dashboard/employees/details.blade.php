@@ -304,15 +304,6 @@
     }
 
     function drawMonthNumbers(categories, data, month){
-        // categories = [];
-        // data = [];
-        // for (var i = 1; i <= 8; i++) {
-        //  categories.push(i);
-        // }
-
-        // for (var i = 1; i <= 8; i++) {
-        //  data.push(Math.ceil(Math.random() * (30-0) + 0));
-        // }
         Highcharts.chart('month-stats', {
             chart: {
                 type: 'column'

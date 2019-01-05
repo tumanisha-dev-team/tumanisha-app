@@ -68,7 +68,8 @@ class EmployeeController extends Controller
         $rider->height = $request->input('height');
         $rider->eye_color = $request->input('eye_color');
         $rider->hair_color = $request->input('hair_color');
-		$rider->starting_date = $request->input('starting_date');
+		$rider->starting_date = \Carbon\Carbon::parse($request->input('starting_date'))->format('Y-m-d');
+        $rider->jumia_no = $request->input('jumia_no');
 
         if ($request->hasFile('image')) {
             $this->validate($request, [
@@ -127,7 +128,8 @@ class EmployeeController extends Controller
         $rider->height = $request->input('height');
         $rider->eye_color = $request->input('eye_color');
         $rider->hair_color = $request->input('hair_color');
-				$rider->starting_date = new \Carbon\Carbon($request->input('starting_date'));
+		$rider->starting_date = new \Carbon\Carbon($request->input('starting_date'));
+        $rider->jumia_no = $request->input('jumia_no');
 
         if ($request->hasFile('image')) {
             $this->validate($request, [

@@ -178,6 +178,10 @@
 											{!! Form::label('starting_date', 'Official Starting Date', ['class' => 'control-label']) !!}
 											{!! Form::text('starting_date', NULL, ['class' => 'form-control']) !!}
 										</div>
+										<div class="col-lg-6">
+											{!! Form::label('jumia_no', 'Jumia No.', ['class' => 'control-label']) !!}
+											{!! Form::text('jumia_no', NULL, ['class' => 'form-control']) !!}
+										</div>
 									</div>
 								</fieldset>
 							</div>
