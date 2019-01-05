@@ -26,6 +26,7 @@ class RiderController extends Controller
     						$join->on('riders.id', '=', 'rider_numbers.employee_id')
     						->where('rider_numbers.orders_date', '=', $date);
     					})
+              ->orderBy('riders.jumia_no', 'ASC')
     					->get();
 
     	return $riderNumbers;

@@ -138,7 +138,6 @@ class EmployeeController extends Controller
             $rider->photo_url = $request->file('image')->store('profiles');
         }
 
-
         $rider->save();
         return redirect()->back()->with('success', 'Successfully updated rider information');
     }
