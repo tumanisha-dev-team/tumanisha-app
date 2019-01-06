@@ -330,7 +330,7 @@
     function drawMonthNumbers(categories, data, month){
         Highcharts.chart('month-stats', {
             chart: {
-                type: 'column'
+                type: 'line'
             },
             title: {
                 text: 'Rider Order Count'
