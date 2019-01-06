@@ -231,7 +231,7 @@
     						totalOrders += data.number;
     					}
                         categories.push(moment(data.date).format('Do'));
-                        dayNo.push(formattedOrders);
+                        dayNo.push((data.number == "") ? 0 : data.number);
 	    				$('#orders-table').append("<tr><td>"+moment(data.date).format("DD/MM/YYYY")+"</td><td>"+formattedOrders+"</td></tr>");
 	    			});
     			}else{
