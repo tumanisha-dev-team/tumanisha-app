@@ -37,13 +37,13 @@ class HomeController extends Controller
 
     public function getLastMonthChampion(){
         $lastMonth = new Carbon('first day of last month');
-        $highestLastMonth = RiderNumber::select('employee_id', \DB::raw('MAX(orders) AS orders'))->whereBetween('orders_date', [$lastMonth->format('Y-m-d'), $lastMonth->endOfMonth()->format('Y-m-d')])->groupBy('employee_id')->first();
+        $highestLastMonth = RiderNumber::select('employee_id', \DB::raw('SUM(orders) AS orders'))->whereBetween('orders_date', [$lastMonth->format('Y-m-d'), $lastMonth->endOfMonth()->format('Y-m-d')])->groupBy('employee_id')->orderBy(\DB::raw('SUM(orders)'), 'DESC')->first();
         return $highestLastMonth;
     }
 
     public function getThisMonthChampion(){
         $thisMonth = Carbon::now();
-        $highestThisMonth = RiderNumber::select('employee_id', \DB::raw('MAX(orders) AS orders'))->whereBetween('orders_date', [$thisMonth->startOfMonth()->format('Y-m-d'), $thisMonth->endOfMonth()->format('Y-m-d')])->groupBy('employee_id')->first();
+        $highestThisMonth = RiderNumber::select('employee_id', \DB::raw('SUM(orders) AS orders'))->whereBetween('orders_date', [$thisMonth->startOfMonth()->format('Y-m-d'), $thisMonth->endOfMonth()->format('Y-m-d')])->groupBy('employee_id')->orderBy(\DB::raw('SUM(orders)'), 'DESC')->first();
         if($highestThisMonth){
             return $highestThisMonth;
         }else{
