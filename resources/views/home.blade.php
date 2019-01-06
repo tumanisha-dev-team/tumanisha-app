@@ -34,7 +34,7 @@
                                         <span class="pad-lft text-semibold">
                                             <span class="text-lg">{{ $thisMonthOrders }}</span>
                                             <span class="labellabel-success mar-lft">
-                                                @if(($thisMonthOrders - $lastMonthNumbers) < 0)
+                                                @if ($thisMonthOrders - $lastMonthNumbers < 0)
                                                     <i class="pci-caret-down text-danger"></i> 
                                                 @else
                                                     <i class="pci-caret-up text-success"></i>
@@ -67,9 +67,48 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                    <hr>
+                    <div class="pad-all">
+
+                    </div>
                 </div>
             </div>
-        </div>
+         </div>
+         <div class="col-lg-5">
+             <div class="row">
+                <div class="col-sm-6 col-lg-6">
+                    <div class="panel">
+                        <div class="panel-body text-center">
+                            @if($thisMonthChampion != null)
+                            <img alt="Profile Picture" class="img-lg img-circle mar-btm" src="{{ $thisMonthChampion->rider->rider_avatar }}">
+                            <p class="text-muted ">This Month's Champion</p>
+                            <p class="text-normal text-semibold mar-no text-main">{{ $thisMonthChampion->rider->name }} ({{$thisMonthChampion->orders}})</p>
+                            @else
+                            <img alt="Profile Picture" class="img-lg mar-btm" src="{{ asset('dashboard/img/champion.svg') }}">
+                            <p class="text-muted">This Month's Champion</p>
+                            <p class="text-normal text-semibold mar-no text-main">No sufficient data</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-sm-6 col-lg-6">
+                    <div class="panel">
+                        <div class="panel-body text-center">
+                            @if($lastMonthChampion != null)
+                            <img alt="Profile Picture" class="img-lg img-circle mar-btm" src="{{ $lastMonthChampion->rider->rider_avatar }}">
+                            <p class="text-muted ">Last Month's Champion</p>
+                            <p class="text-normal text-semibold mar-no text-main">{{ $lastMonthChampion->rider->name }} ({{$lastMonthChampion->orders}})</p>
+                            @else
+                            <img alt="Profile Picture" class="img-lg mar-btm" src="{{ asset('dashboard/img/champion.svg') }}">
+                            <p class="text-normal text-semibold mar-no text-main">No sufficient data to get champion</p>
+                            <p class=""></p>
+                            @endif
+                        </div>
+                    </div>
+                 </div>
+             </div>
+         </div>
     </div>
 @endsection
 
@@ -116,13 +155,16 @@
         // }
         Highcharts.chart('orders-chart', {
             chart: {
-                type: 'area'
+                type: 'line'
             },
             title: {
                 text: 'Order Count'
             },
             subtitle: {
                 text: 'Last 8 Months'
+            },
+            legend: {
+                enabled: false
             },
             xAxis: {
                 categories: data.categories,
