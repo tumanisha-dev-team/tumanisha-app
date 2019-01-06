@@ -108,6 +108,15 @@
                     </div>
                  </div>
              </div>
+             <div class="row">
+                 <div class="col-sm-12 col-lg-12">
+                     <div class="panel">
+                        <div class="pad-all">
+                            <div id="top5riders" style="height: 300px;"></div>
+                        </div>
+                     </div>
+                 </div>
+             </div>
          </div>
     </div>
 @endsection
@@ -138,6 +147,31 @@
             },
             error: function(){
                 $('#orders-chart').unblock();
+                toastr.error("There was an error", "Whoops!");
+            }
+        });
+
+        $.ajax({
+            method: "GET",
+            url: "/api/riders/top5",
+            beforeSend: function(){
+                $('#top5riders').block(blockObj);
+            },
+            success: function(res){
+                data = {};
+                data.categories = [];
+                data.data = [];
+                $.each(res, function(k,v){
+                    // console.log(v.employee_id, v.rider);
+                    // var month = moment(v.month, "MMMM YYYY").format('MMM');
+                    data.categories.push(v.rider.first_name + " " + v.rider.last_name);
+                    data.data.push(parseInt(v.orders));
+                });
+
+                getTop5Riders(data);
+            },
+            error: function(){
+                $('#top5riders').unblock();
                 toastr.error("There was an error", "Whoops!");
             }
         });
@@ -195,6 +229,52 @@
                 data: data.data
             }]
         });       
+    }
+
+    function getTop5Riders(data){
+        console.log(data);
+        Highcharts.chart('top5riders', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Order Count'
+            },
+            subtitle: {
+                text: 'Top 5 Riders'
+            },
+            legend: {
+                enabled: false
+            },
+            xAxis: {
+                categories: data.categories,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Orders'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y} orders</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Orders',
+                data: data.data
+            }]
+        });
     }
 </script>
 @endsection

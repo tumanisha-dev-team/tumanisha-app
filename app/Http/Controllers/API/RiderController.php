@@ -32,6 +32,12 @@ class RiderController extends Controller
     	return $riderNumbers;
     }
 
+    function getTop5Riders(){
+      $riderNumbers = RiderNumber::with('rider')->select('employee_id', \DB::raw('SUM(orders) AS orders'))->groupBy('employee_id')->orderBy(\DB::raw('SUM(orders)'))->limit(5)->get();
+
+      return $riderNumbers;
+    }
+
     function getMonthOrders($month){
       $orders = RiderNumber::select(\DB::raw('SUM(orders) AS orders'))
                             ->where(\DB::raw('MONTH(orders_date)'), $month)

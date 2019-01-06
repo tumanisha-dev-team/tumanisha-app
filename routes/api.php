@@ -32,4 +32,6 @@ Route::prefix('riders')->group(function(){
 	Route::get('numbers/8months', 'API\RiderController@getTotalLast8Months');
 	Route::get('numbers/{rider_id}/last8Months', 'API\RiderController@getLast8Months');
 	Route::get('numbers/{rider_id}/month/{month}/{year}', 'API\RiderController@getMonthNumbers');
+
+	Route::get('top5', 'API\RiderController@getTop5Riders');
 });
