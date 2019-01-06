@@ -39,7 +39,7 @@
                                                 @else
                                                     <i class="pci-caret-up text-success"></i>
                                                 @endif
-                                                <small>{{ (($thisMonthOrders - $lastMonthNumbers) / $lastMonthNumbers) * 100 }}</small>
+                                                <small>{{ ceil((($thisMonthOrders - $lastMonthNumbers) / $lastMonthNumbers) * 100) }}%</small>
                                             </span>
                                         </span>
                                     </p>
