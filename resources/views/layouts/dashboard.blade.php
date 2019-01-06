@@ -25,6 +25,12 @@
 
 	<link href="{{ asset('dashboard/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
 
+	<style type="text/css">
+		html{
+			scroll-behavior: smooth;
+		}
+	</style>
+
 
 	@yield('css')
 </head>

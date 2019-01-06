@@ -186,7 +186,7 @@
     				data.data.push(v.numbers);
     			});
 
-    			drawLast8MonthsChart(data);
+    			drawLast8MonthsChart(data, res);
     		},
     		error: function(){
     			toastr.error("There was an error", "Whoops!");
@@ -252,7 +252,7 @@
 
     // function getLast8MonthsData
 
-    function drawLast8MonthsChart(data){
+    function drawLast8MonthsChart(data, raw){
     	// categories = [];
     	// data = [];
     	// for (var i = 1; i <= 8; i++) {
@@ -294,7 +294,31 @@
 				column: {
 					pointPadding: 0.2,
 					borderWidth: 0
-				}
+				},
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function(){
+                                month = raw[this.index].month;
+                                var monthFrags = month.split(" ");
+                                monthName = monthFrags[0];
+                                year = monthFrags[1];
+
+                                $('html, body').animate({
+                                    scrollTop: $("div#month-stats").offset().top
+                                }, 1000);
+
+                                $('select[name="month-select"]').val(monthName);
+                                $('select[name="year-select"]').val(year);
+
+                                $('#search-month-data').trigger('click');
+
+                                
+                            }
+                        }
+                    }
+                }
 			},
 			series: [{
 				name: 'orders',
