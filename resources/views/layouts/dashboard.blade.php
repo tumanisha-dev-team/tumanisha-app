@@ -93,14 +93,12 @@
 		<div class="boxed">
 			<div id="content-container">
 				<div id="page-head">
+					@yield('custom_head')
+					@if (trim($__env->yieldContent('title')))
 					<div id="page-title">
 						<h1 class="page-header text-overflow">@yield('title')</h1>
 					</div>
-
-					<!-- <ol class="breadcrumb">
-						<li><a href="/"><i class="demo-pli-home"></i></a></li>
-						<li class="active">@yield('title')</li>
-					</ol> -->
+					@endif
 				</div>
 
 				<div id="page-content">

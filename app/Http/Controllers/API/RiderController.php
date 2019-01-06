@@ -173,6 +173,27 @@ class RiderController extends Controller
     return $response;
   }
 
+  function getTotalLast8Months(){
+    $today = Carbon::now()->startOfMonth();
+    $monthsago = Carbon::now()->subMonths(7)->startOfMonth();
+
+    $period = CarbonPeriod::create($monthsago, '1 month', $today);
+
+    $response = [];
+    foreach ($period as $dt) {
+      $data = RiderNumber::whereBetween('orders_date', [$dt->format('Y-m-d'), $dt->endOfMonth()->format('Y-m-d')])
+                          ->sum('orders');
+
+      $response[] = [
+        'month'   =>  $dt->format('F Y'),
+        'numbers' =>  (int)$data
+      ];
+      // echo $dt->endOfMonth(). "<br/>";
+    }
+
+    return $response;
+  }
+
   function getMonthNumbers(Request $request){
     $rider_id = $request->rider_id;
     $month = $request->month;
