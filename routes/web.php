@@ -52,3 +52,7 @@ Route::prefix('invoices')->group(function(){
 	Route::get('/edit/{id}', 'Dashboard\InvoiceController@editInvoice')->name('edit-invoice');
 	Route::post('/edit/{id}', 'Dashboard\InvoiceController@update')->name('invoice-send-update');
 });
+
+Route::prefix('users')->group(function(){
+	Route::get('/', 'Dashboard\UserController@index')->name('user-management');
+});

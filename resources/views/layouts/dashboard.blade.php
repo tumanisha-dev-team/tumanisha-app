@@ -173,7 +173,12 @@
 											<li><a href="{{ route('assets-home') }}">Manage Assets</a></li>
 										</ul>
 									</li>
-
+									<li>
+										<a href="{{ route('user-management') }}">
+											<i class="demo-pli-male"></i>
+											<span class="menu-title">User Management</span>
+										</a>
+									</li>
 									<li class="list-divider"></li>
 									@endif
 									@if(Auth::user()->user_role == "admin" || Auth::user()->user_role == "finance")
