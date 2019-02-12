@@ -133,7 +133,7 @@
 		}
 
 		function getLifeTimeOrders(){
-			$.get('/api/riders/orders/total', function(res){
+			$.get('/api/riders/orders/lifetime/aggregated', function(res){
 				$('#lifetime-orders').text(res.orders);
 			});
 		}

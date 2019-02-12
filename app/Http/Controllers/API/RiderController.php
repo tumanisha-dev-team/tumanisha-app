@@ -74,6 +74,7 @@ class RiderController extends Controller
     function getAllOrders(){
       $orders = RiderNumber::select(\DB::raw('SUM(orders) AS orders'))
                             ->first();
+      // dd($orders);
 
       if($orders == NULL){
         $orders = [
