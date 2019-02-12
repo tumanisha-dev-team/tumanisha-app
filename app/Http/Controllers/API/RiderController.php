@@ -20,16 +20,34 @@ class RiderController extends Controller
 
     function getRidersOrderByDate($date){
     	$date = \Carbon\Carbon::parse($date)->format('Y-m-d');
-    	$riderNumbers = \DB::table('riders')
-    					->select('riders.id', 'riders.first_name', 'riders.last_name', 'riders.photo_url', \DB::raw('rider_numbers.id AS orders_id'), 'rider_numbers.orders', 'rider_numbers.orders_date', 'rider_numbers.comments')
+    	$riderNumbers = Rider::select('riders.id', 'riders.first_name', 'riders.last_name', 'riders.photo_url', \DB::raw('rider_numbers.id AS orders_id'), 'rider_numbers.orders', 'rider_numbers.orders_date', 'rider_numbers.comments', 'rider_deactivations.from', 'rider_deactivations.to')
     					->leftJoin('rider_numbers', function($join) use ($date){
     						$join->on('riders.id', '=', 'rider_numbers.employee_id')
     						->where('rider_numbers.orders_date', '=', $date);
     					})
+              ->leftJoin('rider_deactivations', function($join) use($date){
+                $join->on('riders.id', '=', 'rider_deactivations.rider_id')
+                ->where('rider_deactivations.from', '<=', $date);
+              })
               ->orderBy('riders.jumia_no', 'ASC')
     					->get();
 
-    	return $riderNumbers;
+      $filtered = $riderNumbers->filter(function($user) use ($date){
+        if(is_null($user->from)){
+          return true;
+        }else{
+          if ($user->from <= $date && is_null($user->to)) {
+            return false;
+          }
+          elseif ($user->from <= $date && $user->to >= $date) {
+            return false;
+          }
+
+          return true;
+        }
+      });
+
+    	return $filtered->all();
     }
 
     function getTop5Riders(){

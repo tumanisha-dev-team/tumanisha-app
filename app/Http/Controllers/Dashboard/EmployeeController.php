@@ -10,6 +10,7 @@ use App\Enums\Religion;
 use App\Rider;
 use App\RiderSchedule;
 use App\RiderNumber;
+use App\RiderDeactivation;
 
 use Intervention\Image\ImageManagerStatic as Image;
 use PDF;
@@ -234,5 +235,21 @@ class EmployeeController extends Controller
 
         $pdf = PDF::loadView('pdf.schedule', $data);
         return $pdf->stream('schedule.pdf');
+    }
+
+    function deactivateRider(Request $request){
+        $deactivation = new RiderDeactivation();
+
+        // die(\Carbon\Carbon::parse($request->from)->format('Y-m-d'));
+
+        $deactivation->rider_id = $request->rider_id;
+        $deactivation->from = \Carbon\Carbon::parse($request->from)->format('Y-m-d');
+        $deactivation->to = ($request->to) ? \Carbon\Carbon::parse($request->to)->format('Y-m-d') : NULL;
+        $deactivation->deactivated_by = \Auth::user()->id;
+        $deactivation->reason = $request->reason;
+
+        $deactivation->save();
+
+        return back()->with('success', 'Successfully deactivated rider for the period specified');
     }
 }

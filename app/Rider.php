@@ -60,4 +60,25 @@ class Rider extends Model
 	public function getStartingDateAttribute($value){
 		return \Carbon\Carbon::parse($value)->format('F d, Y');
 	}
+
+	public function deactivations(){
+		return $this->hasMany('App\RiderDeactivation', 'rider_id', 'id');
+	}
+
+	public function getDeactivatedAttribute(){
+		$today = \Carbon\Carbon::now()->format('Y-m-d');
+		$deactivations = $this->deactivations()->where('from', '<=', $today)->get();
+		$filtered = $deactivations->filter(function($user) use ($today){
+			if (is_null($user->to)) {
+				return true;
+			}
+			elseif ($user->to >= $today) {
+				return true;
+			}
+
+			return false;
+		});
+
+		return $filtered->all();
+	}
 }

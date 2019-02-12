@@ -38,6 +38,7 @@ Route::prefix('employees')->group(function(){
 			return response()->download(storage_path("app/" . $rider->photo_url));
 		}
 	})->name('rider-profile');
+	Route:: post('/rider/deactivate', 'Dashboard\EmployeeController@deactivateRider')->name('deactivate-rider');
 
 	Route::get('/rider/numbers', 'Dashboard\RiderNumbersController@index')->name('rider-numbers');
 	Route::get('/rider/numbers/summary', 'Dashboard\RiderNumbersController@riderSummary')->name('rider-numbers-summary');

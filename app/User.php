@@ -29,4 +29,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getAvatarAttribute(){
+        return '/dashboard/img/profile-photos/2.png';
+    }
 }
