@@ -71,6 +71,19 @@ class RiderController extends Controller
       return $orders;
     }
 
+    function getAllOrders(){
+      $orders = RiderNumber::select(\DB::raw('SUM(orders) AS orders'))
+                            ->first();
+
+      if($orders == NULL){
+        $orders = [
+          'orders'  =>  0
+        ];
+      }
+
+      return $orders;
+    }
+
     function storeOrders(Request $request){
     	$data = [];
     	foreach($request->input('id') as $k => $id){

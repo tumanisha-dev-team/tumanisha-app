@@ -74,6 +74,7 @@
 		var today = '{{ new \Carbon\Carbon() }}';
 		getCurrentMonthOrders();
 		getLastMonthOrders();
+		getLifeTimeOrders();
 		var datepicker = $('#date-picker').datepicker({
 			calendarWeeks: true,
 			endDate: today,
@@ -107,7 +108,6 @@
 
 		function manageBeforeAfterButtons(currentDate){
 			difference = currentDate.diff(moment(today), 'days');
-			console.log(difference);
 			if (difference == -1) {
 				$('#date-after').prop('disabled', true);
 			}else{
@@ -129,6 +129,12 @@
 
 			$.get('/api/riders/orders/total/' + month + '/month', function(res){
 				$('#previous-month-orders').text(res.orders);
+			});
+		}
+
+		function getLifeTimeOrders(){
+			$.get('/api/riders/orders/total', function(res){
+				$('#lifetime-orders').text(res.orders);
 			});
 		}
 
